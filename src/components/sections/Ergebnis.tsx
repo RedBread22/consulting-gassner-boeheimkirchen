@@ -2,7 +2,6 @@
 
 import { ergebnis, wirtschaftlichkeit } from "../../../content/boeheimkirchen";
 import { SectionWrapper } from "../ui/SectionWrapper";
-import { KpiNumber } from "../ui/KpiNumber";
 import { PieChartDisplay } from "../ui/PieChartVorherNachher";
 
 function formatNumber(n: number): string {
@@ -21,17 +20,20 @@ export function Ergebnis() {
       </h2>
 
       <div className="mb-20 text-center">
-        <KpiNumber
-          value={formatNumber(wirtschaftlichkeit.gesamteinsparung_30Jahre_eur)}
-          label="Gesamteinsparung auf 30 Jahre (€)"
-          suffix="€"
-        />
+        <p className="font-serif text-7xl md:text-8xl tracking-tight text-accent">
+          {formatNumber(wirtschaftlichkeit.gesamteinsparung_30Jahre_eur)}
+          <span className="text-4xl md:text-5xl ml-2">€</span>
+        </p>
+        <p className="mt-2 text-xs uppercase tracking-[0.15em] text-fg-muted font-sans">
+          Gesamteinsparung auf 30 Jahre (€)
+        </p>
       </div>
 
       <div className="flex justify-center mb-20">
         <PieChartDisplay
           eigennutzen={ergebnis.pvNachher.eigennutzen_prozent}
           ueberschuss={ergebnis.pvNachher.ueberschuss_prozent}
+          accentColor="#C9322B"
           label={`PV-Leistung ${ergebnis.pvNachher.leistung_kWp.toLocaleString("de-AT")} kWp · ${formatNumber(ergebnis.pvNachher.leistung_kWh)} kWh · ${ergebnis.pvNachher.sonnenstunden.toLocaleString("de-AT")} Sonnenstunden`}
         />
       </div>

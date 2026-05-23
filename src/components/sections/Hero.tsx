@@ -23,7 +23,7 @@ export function Hero() {
     : aktuellerStand.pv.ueberschuss_prozent;
 
   return (
-    <section className="min-h-screen flex items-center pt-16 relative">
+    <section className="min-h-screen flex items-center pt-16 relative bg-bg">
       <div className="max-w-content mx-auto px-6 w-full">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           <motion.div
@@ -68,6 +68,7 @@ export function Hero() {
             <PieChartDisplay
               eigennutzen={eigennutzen}
               ueberschuss={ueberschuss}
+              accentColor={showNachher ? "#C9322B" : undefined}
             />
           </motion.div>
         </div>

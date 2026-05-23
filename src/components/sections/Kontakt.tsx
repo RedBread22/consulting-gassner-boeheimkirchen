@@ -60,7 +60,7 @@ export function Kontakt() {
           href={kontakt.terminBuchenUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block bg-fg text-bg px-8 py-4 text-sm uppercase tracking-[0.15em] hover:bg-fg/85 transition-colors"
+          className="inline-block bg-fg text-bg px-10 py-4 text-sm uppercase tracking-[0.2em] font-medium cursor-pointer hover:bg-accent hover:-translate-y-[1px] transition-all duration-200"
         >
           Termin vereinbaren
         </a>
