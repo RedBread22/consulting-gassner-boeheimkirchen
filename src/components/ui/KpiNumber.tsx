@@ -17,10 +17,10 @@ export function KpiNumber({ value, label, suffix }: Props) {
       transition={{ duration: 0.5 }}
       className="text-center max-w-[14rem] mx-auto"
     >
-      <p className="font-serif text-5xl md:text-7xl tracking-tight text-fg">
+      <p className="font-serif text-5xl md:text-7xl tracking-tight text-fg leading-none">
         {value}
         {suffix && (
-          <span className="text-3xl md:text-4xl ml-1 text-fg-muted">
+          <span className="text-2xl text-fg-muted ml-1 align-baseline">
             {suffix}
           </span>
         )}
