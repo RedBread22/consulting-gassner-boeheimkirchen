@@ -68,6 +68,7 @@ export function Hero() {
             <PieChartDisplay
               eigennutzen={eigennutzen}
               ueberschuss={ueberschuss}
+              accentColor={showNachher ? "#C9322B" : undefined}
             />
           </motion.div>
         </div>

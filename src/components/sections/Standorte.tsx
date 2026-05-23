@@ -34,7 +34,7 @@ export function Standorte() {
           >
             <Link
               href={`/standorte/${s.slug}`}
-              className="group block border border-border hover:border-fg/20 transition-colors"
+              className="group block border border-[#E5E5E5] hover:border-[#111111] hover:-translate-y-[2px] transition-all duration-200"
             >
               <ImagePlaceholder label={s.bildPlatzhalter} />
 
@@ -70,7 +70,7 @@ export function Standorte() {
                   )}
                 </div>
 
-                <span className="text-sm text-fg-muted group-hover:text-fg transition-colors inline-flex items-center gap-1">
+                <span className="text-sm text-fg-muted group-hover:text-accent transition-all duration-200 inline-flex items-center gap-1">
                   Details ansehen
                   <ArrowRight className="w-4 h-4" />
                 </span>
