@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { gemeinde, aktuellerStand, ergebnis } from "../../../content/boeheimkirchen";
@@ -32,9 +33,14 @@ export function Hero() {
             transition={{ duration: 0.7 }}
           >
             <div className="mb-8">
-              <div className="w-20 h-20 bg-[#F0F0EE] border border-dashed border-[#D0D0CC] flex items-center justify-center text-xs text-fg-muted">
-                Logo
-              </div>
+              <Image
+                src={gemeinde.logoSrc}
+                alt={`Logo ${gemeinde.name}`}
+                width={80}
+                height={80}
+                priority
+                className="h-20 w-auto"
+              />
             </div>
 
             <h1 className="font-serif text-5xl md:text-7xl lg:text-[80px] leading-[1.05] tracking-tight">
