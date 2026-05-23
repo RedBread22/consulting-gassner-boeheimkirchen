@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Phone, Mail, Globe } from "lucide-react";
 import { kontakt } from "../../../content/boeheimkirchen";
 import { SectionWrapper } from "../ui/SectionWrapper";
@@ -9,9 +10,13 @@ export function Kontakt() {
     <SectionWrapper id="kontakt" soft>
       <div className="max-w-2xl mx-auto text-center">
         <div className="mb-8">
-          <div className="w-40 h-12 bg-[#F0F0EE] border border-dashed border-[#D0D0CC] flex items-center justify-center text-xs text-fg-muted mx-auto">
-            Consulting Gassner Logo
-          </div>
+          <Image
+            src={kontakt.logoSrc}
+            alt="Consulting Gassner"
+            width={240}
+            height={72}
+            className="h-16 w-auto mx-auto"
+          />
         </div>
 
         <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-4">
