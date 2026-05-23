@@ -20,7 +20,7 @@ export function Ergebnis() {
       </h2>
 
       <div className="mb-20 text-center">
-        <p className="font-serif text-7xl md:text-8xl tracking-tight text-accent">
+        <p className="font-serif text-7xl md:text-8xl tracking-tight text-fg">
           {formatNumber(wirtschaftlichkeit.gesamteinsparung_30Jahre_eur)}
           <span className="text-4xl md:text-5xl ml-2">€</span>
         </p>
@@ -33,7 +33,6 @@ export function Ergebnis() {
         <PieChartDisplay
           eigennutzen={ergebnis.pvNachher.eigennutzen_prozent}
           ueberschuss={ergebnis.pvNachher.ueberschuss_prozent}
-          accentColor="#C9322B"
           label={`PV-Leistung ${ergebnis.pvNachher.leistung_kWp.toLocaleString("de-AT")} kWp · ${formatNumber(ergebnis.pvNachher.leistung_kWh)} kWh · ${ergebnis.pvNachher.sonnenstunden.toLocaleString("de-AT")} Sonnenstunden`}
         />
       </div>

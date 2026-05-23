@@ -70,7 +70,7 @@ export function Standorte() {
                   )}
                 </div>
 
-                <span className="text-sm text-fg-muted group-hover:text-accent transition-all duration-200 inline-flex items-center gap-1">
+                <span className="text-sm text-fg-muted inline-flex items-center gap-1">
                   Details ansehen
                   <ArrowRight className="w-4 h-4" />
                 </span>
