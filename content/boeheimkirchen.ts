@@ -74,7 +74,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Überdachung des Mittelschul-Parkplatzes als Carport-Konstruktion mit integrierter Photovoltaik. Doppelter Nutzen: Wetterschutz für die Fahrzeuge und Stromerzeugung über die Mittagsspitze.",
     bildPlatzhalter: "Parkplatz Mittelschule – Carport mit PV",
-    bildSrc: "/images/standorte/parkplatz-mittelschule.jpg",
+    bildSrc: "/images/standorte/parkplatz-mittelschule.webp",
   },
   {
     slug: "parkplatz-bahnhof",
@@ -84,7 +84,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Größter Einzelstandort des Konzepts. Carport-Anlage am Bahnhof-Parkplatz mit hohem Eigennutzungspotenzial durch die geplanten Ladestationen direkt am Standort.",
     bildPlatzhalter: "Parkplatz Bahnhof – Carport-PV",
-    bildSrc: "/images/standorte/parkplatz-bahnhof.jpg",
+    bildSrc: "/images/standorte/parkplatz-bahnhof.webp",
   },
   {
     slug: "mittelschule",
@@ -96,7 +96,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Aufdach-Anlage auf der Mittelschule inklusive Notstromsystem. Die Schule wird damit blackoutfähig — kritischer Standort als möglicher Notunterstands-Punkt für die Gemeinde.",
     bildPlatzhalter: "Mittelschule – Aufdach-Anlage",
-    bildSrc: "/images/standorte/mittelschule.jpg",
+    bildSrc: "/images/standorte/mittelschule.webp",
   },
   {
     slug: "kindergarten-aufeld",
@@ -107,7 +107,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Repowering der bestehenden PV-Anlage am Kindergarten — neue, leistungsfähigere Module bei gleicher Dachfläche, plus Batteriespeicher.",
     bildPlatzhalter: "Kindergarten Aufeld – Aufdach",
-    bildSrc: "/images/standorte/kindergarten-aufeld.jpg",
+    bildSrc: "/images/standorte/kindergarten-aufeld.webp",
   },
   {
     slug: "posthaus",
@@ -118,7 +118,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Indachsystem statt klassischer Aufdach-Montage — die PV-Module ersetzen Teile der Dacheindeckung und fügen sich optisch in das Gebäudebild ein.",
     bildPlatzhalter: "Posthaus – Indachsystem",
-    bildSrc: "/images/standorte/posthaus.jpg",
+    bildSrc: "/images/standorte/posthaus.webp",
   },
   {
     slug: "gemeindeamt",
@@ -131,7 +131,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Denkmalgeschütztes Gebäude — Einsatz des Solumera-Systems, das optisch unauffällig in die historische Dachstruktur integriert wird. Mit Notstromsystem als blackoutfähiger Verwaltungsstandort.",
     bildPlatzhalter: "Gemeindeamt – Solumera-Integration",
-    bildSrc: "/images/standorte/gemeindeamt.jpg",
+    bildSrc: "/images/standorte/gemeindeamt.webp",
   },
   {
     slug: "sportplatz",
@@ -142,7 +142,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Flachdach-Aufdach-Anlage am Sportplatz-Gebäude mit Batteriespeicher zur Lastverschiebung in die Abendstunden (Flutlichtbetrieb).",
     bildPlatzhalter: "Sportplatz – Flachdach-PV",
-    bildSrc: "/images/standorte/sportplatz.jpg",
+    bildSrc: "/images/standorte/sportplatz.webp",
   },
 ];
 
