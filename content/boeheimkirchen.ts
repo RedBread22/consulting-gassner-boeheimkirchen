@@ -200,6 +200,6 @@ export const kontakt = {
   telefon: "+43 664 5325555",
   email: "info@consulting-gassner.at",
   website: "www.consulting-gassner.at",
-  terminBuchenUrl: "https://www.consulting-gassner.at/#kontakt",
+  terminBuchenUrl: "https://www.consulting-gassner.at/blank-4",
   logoSrc: "/logos/gassner-consulting.png",
 } as const;

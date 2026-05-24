@@ -15,9 +15,9 @@ export function KpiNumber({ value, label, suffix }: Props) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5 }}
-      className="text-center max-w-[14rem] mx-auto"
+      className="flex flex-col items-center text-center min-w-0 overflow-hidden"
     >
-      <p className="font-serif text-5xl md:text-7xl tracking-tight text-fg leading-none">
+      <p className="font-serif text-5xl md:text-6xl tracking-tight text-fg leading-none">
         {value}
         {suffix && (
           <span className="text-2xl text-fg-muted ml-1 align-baseline">
