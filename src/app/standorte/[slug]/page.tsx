@@ -42,6 +42,7 @@ export default function StandortDetail({ params }: Props) {
               alt={standort.name}
               width={800}
               height={600}
+              unoptimized={true}
               className="w-full aspect-[4/3] object-cover"
             />
           ) : (
