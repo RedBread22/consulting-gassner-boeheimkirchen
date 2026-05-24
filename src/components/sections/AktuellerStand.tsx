@@ -16,24 +16,28 @@ export function AktuellerStand() {
         Wo Böheimkirchen heute steht
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-16 lg:gap-x-24 gap-y-12 items-start mb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 lg:gap-x-20 gap-y-12 items-start mb-20">
         <KpiNumber
           value={formatNumber(aktuellerStand.stromverbrauch_kWh)}
           label="Stromverbrauch kWh"
+          compact
         />
         <KpiNumber
           value={formatNumber(aktuellerStand.gesamtkosten_eur)}
           label="Gesamtkosten €"
+          compact
         />
         <KpiNumber
           value={aktuellerStand.stromkosten_ct_kWh.toFixed(2).replace(".", ",")}
           label="Cent pro kWh"
           suffix="ct"
+          compact
         />
         <KpiNumber
           value={formatNumber(aktuellerStand.pv.groesse_kWp)}
           label="Bestehende PV kWp"
           suffix="kWp"
+          compact
         />
       </div>
 
