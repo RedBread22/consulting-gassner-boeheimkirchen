@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Battery, ShieldCheck } from "lucide-react";
 import { standorte, ergebnis } from "../../../content/boeheimkirchen";
@@ -36,7 +37,17 @@ export function Standorte() {
               href={`/standorte/${s.slug}`}
               className="group block border border-[#E5E5E5] hover:border-[#111111] hover:-translate-y-[2px] transition-all duration-200"
             >
-              <ImagePlaceholder label={s.bildPlatzhalter} />
+              {s.bildSrc ? (
+                <Image
+                  src={s.bildSrc}
+                  alt={s.name}
+                  width={800}
+                  height={600}
+                  className="w-full aspect-[4/3] object-cover"
+                />
+              ) : (
+                <ImagePlaceholder label={s.bildPlatzhalter} />
+              )}
 
               <div className="p-6">
                 <h3 className="font-serif text-2xl tracking-tight mb-2">
@@ -70,7 +81,7 @@ export function Standorte() {
                   )}
                 </div>
 
-                <span className="text-sm text-fg-muted group-hover:text-accent transition-all duration-200 inline-flex items-center gap-1">
+                <span className="text-sm text-fg-muted inline-flex items-center gap-1">
                   Details ansehen
                   <ArrowRight className="w-4 h-4" />
                 </span>

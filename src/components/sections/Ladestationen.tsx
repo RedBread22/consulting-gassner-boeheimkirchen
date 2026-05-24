@@ -35,7 +35,7 @@ export function Ladestationen() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-x-16 items-start">
           <KpiNumber
             value={formatNumber(ladestationen.ladevorgaengeProJahr)}
             label="Ladevorgänge / Jahr"

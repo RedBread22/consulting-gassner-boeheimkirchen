@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Battery, ShieldCheck } from "lucide-react";
 import { standorte } from "../../../../content/boeheimkirchen";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
@@ -35,7 +36,17 @@ export default function StandortDetail({ params }: Props) {
         </Link>
 
         <div className="mb-12">
-          <ImagePlaceholder label={standort.bildPlatzhalter} />
+          {standort.bildSrc ? (
+            <Image
+              src={standort.bildSrc}
+              alt={standort.name}
+              width={800}
+              height={600}
+              className="w-full aspect-[4/3] object-cover"
+            />
+          ) : (
+            <ImagePlaceholder label={standort.bildPlatzhalter} />
+          )}
         </div>
 
         <h1 className="font-serif text-4xl md:text-6xl tracking-tight mb-6">

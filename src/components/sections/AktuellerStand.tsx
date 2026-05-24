@@ -16,7 +16,7 @@ export function AktuellerStand() {
         Wo Böheimkirchen heute steht
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-x-16 items-start mb-20">
         <KpiNumber
           value={formatNumber(aktuellerStand.stromverbrauch_kWh)}
           label="Stromverbrauch kWh"
