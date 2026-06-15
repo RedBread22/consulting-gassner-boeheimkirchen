@@ -15,7 +15,7 @@ export function Kontakt() {
             alt="Consulting Gassner & MHZ Beratung"
             width={640}
             height={240}
-            className="h-20 w-auto max-w-full mx-auto"
+            className="w-[85%] max-w-[280px] md:max-w-[360px] h-auto mx-auto"
           />
         </div>
 
