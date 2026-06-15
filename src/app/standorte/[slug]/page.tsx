@@ -2,11 +2,16 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Battery, ShieldCheck } from "lucide-react";
-import { standorte } from "../../../../content/boeheimkirchen";
+import { standorte, phasen } from "../../../../content/boeheimkirchen";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 
+// Nur Standorte mit konkreten Kennzahlen bekommen eine Detailseite.
+function hatDaten(s: (typeof standorte)[number]): boolean {
+  return s.leistung_kWp != null || s.speicher_kWh != null;
+}
+
 export function generateStaticParams() {
-  return standorte.map((s) => ({ slug: s.slug }));
+  return standorte.filter(hatDaten).map((s) => ({ slug: s.slug }));
 }
 
 type Props = {
@@ -20,9 +25,11 @@ function formatNumber(n: number): string {
 export default function StandortDetail({ params }: Props) {
   const standort = standorte.find((s) => s.slug === params.slug);
 
-  if (!standort) {
+  if (!standort || !hatDaten(standort)) {
     notFound();
   }
+
+  const phase = phasen.find((p) => p.nummer === standort.phase);
 
   return (
     <main className="pt-16">
@@ -46,37 +53,62 @@ export default function StandortDetail({ params }: Props) {
               className="w-full aspect-[4/3] object-cover"
             />
           ) : (
-            <ImagePlaceholder label={standort.bildPlatzhalter} />
+            <ImagePlaceholder label={standort.bildPlatzhalter ?? standort.name} />
           )}
         </div>
+
+        {phase && (
+          <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-4">
+            {phase.titel} · {phase.zeitrahmen}
+          </p>
+        )}
 
         <h1 className="font-serif text-4xl md:text-6xl tracking-tight mb-6">
           {standort.name}
         </h1>
 
-        <p className="text-lg text-fg-muted leading-relaxed max-w-3xl mb-12">
-          {standort.beschreibung}
-        </p>
+        {standort.adresse && (
+          <p className="text-sm text-fg-muted mb-6">{standort.adresse}</p>
+        )}
+
+        {standort.beschreibung && (
+          <p className="text-lg text-fg-muted leading-relaxed max-w-3xl mb-12">
+            {standort.beschreibung}
+          </p>
+        )}
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12 border-t border-b border-border">
-          <div>
-            <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-1">
-              Leistung
-            </p>
-            <p className="font-serif text-3xl">
-              {formatNumber(standort.leistung_kWp)}{" "}
-              <span className="text-lg text-fg-muted">kWp</span>
-            </p>
-          </div>
+          {standort.leistung_kWp != null && (
+            <div>
+              <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-1">
+                Leistung
+              </p>
+              <p className="font-serif text-3xl">
+                {formatNumber(standort.leistung_kWp)}{" "}
+                <span className="text-lg text-fg-muted">kWp</span>
+              </p>
+            </div>
+          )}
 
-          <div>
-            <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-1">
-              Typ
-            </p>
-            <p className="text-lg">{standort.typ}</p>
-          </div>
+          {standort.module != null && (
+            <div>
+              <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-1">
+                Module
+              </p>
+              <p className="font-serif text-3xl">{formatNumber(standort.module)}</p>
+            </div>
+          )}
 
-          {standort.speicher_kWh && (
+          {standort.typ && (
+            <div>
+              <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-1">
+                Typ
+              </p>
+              <p className="text-lg">{standort.typ}</p>
+            </div>
+          )}
+
+          {standort.speicher_kWh != null && (
             <div>
               <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-1">
                 Speicher

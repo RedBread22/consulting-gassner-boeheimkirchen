@@ -51,36 +51,50 @@ export const konzeptZiele = [
   "Senkung des Energieverbrauchs und der Energiekosten durch Effizienzmaßnahmen",
 ] as const;
 
+export type Phase = 1 | 2 | 3;
+
 export type Standort = {
   slug: string;
   name: string;
-  typ: string;
-  leistung_kWp: number;
+  phase: Phase;
+  typ?: string;
+  adresse?: string;
+  module?: number;
+  leistung_kWp?: number;
   speicher_kWh?: number;
   notstrom?: boolean;
   besonderheit?: string;
-  beschreibung: string;
-  bildPlatzhalter: string;
+  status?: string;
+  beschreibung?: string;
+  bildPlatzhalter?: string;
   bildSrc?: string;
 };
 
+// Quelle der Wahrheit: Standort-Tabelle. kWp-Werte werden direkt übernommen
+// (nicht aus der Modulzahl gerechnet — z. B. Posthaus mit 330-W-Modulen).
 export const standorte: Standort[] = [
+  // ── PHASE 1 — kurzfristig ──────────────────────────────────────────────
   {
     slug: "parkplatz-mittelschule",
     name: "Parkplatz Mittelschule",
+    phase: 1,
     typ: "Carport",
-    leistung_kWp: 89.10,
-    speicher_kWh: 36,
+    adresse: "Hochfeldstraße 5",
+    module: 189,
+    leistung_kWp: 85.05,
     beschreibung:
-      "Überdachung des Mittelschul-Parkplatzes als Carport-Konstruktion mit integrierter Photovoltaik. Doppelter Nutzen: Wetterschutz für die Fahrzeuge und Stromerzeugung über die Mittagsspitze.",
+      "Überdachung des Mittelschul-Parkplatzes als Carport-Konstruktion mit integrierter Photovoltaik. Doppelter Nutzen: Wetterschutz für die Fahrzeuge und Stromerzeugung über die Mittagsspitze. Mit zwei 22-kW-Ladepunkten direkt am Standort.",
     bildPlatzhalter: "Parkplatz Mittelschule – Carport mit PV",
     bildSrc: "/images/standorte/parkplatz-mittelschule.webp",
   },
   {
     slug: "parkplatz-bahnhof",
     name: "Parkplatz Bahnhof",
+    phase: 1,
     typ: "Carport",
-    leistung_kWp: 135,
+    adresse: "Bahnhofstraße 2",
+    module: 306,
+    leistung_kWp: 137.7,
     beschreibung:
       "Größter Einzelstandort des Konzepts. Carport-Anlage am Bahnhof-Parkplatz mit hohem Eigennutzungspotenzial durch die geplanten Ladestationen direkt am Standort.",
     bildPlatzhalter: "Parkplatz Bahnhof – Carport-PV",
@@ -89,62 +103,155 @@ export const standorte: Standort[] = [
   {
     slug: "mittelschule",
     name: "Mittelschule Böheimkirchen",
-    typ: "Aufdach",
-    leistung_kWp: 81.45,
-    speicher_kWh: 54,
+    phase: 1,
+    typ: "Aufdach (Eternit)",
+    adresse: "Hochfeldstraße 5",
+    module: 203,
+    leistung_kWp: 91.35,
+    speicher_kWh: 84,
     notstrom: true,
     beschreibung:
-      "Aufdach-Anlage auf der Mittelschule inklusive Notstromsystem. Die Schule wird damit blackoutfähig — kritischer Standort als möglicher Notunterstands-Punkt für die Gemeinde.",
+      "Aufdach-Anlage auf dem Eternitdach der Mittelschule inklusive Batteriespeicher und Notstromsystem. Die Schule wird damit blackoutfähig — kritischer Standort als möglicher Notunterstands-Punkt für die Gemeinde.",
     bildPlatzhalter: "Mittelschule – Aufdach-Anlage",
     bildSrc: "/images/standorte/mittelschule.webp",
   },
   {
+    slug: "sportplatz",
+    name: "Sportplatz Tribüne",
+    phase: 1,
+    typ: "Flachdach",
+    adresse: "Böheimkirchen 100",
+    module: 32,
+    leistung_kWp: 14.4,
+    speicher_kWh: 24,
+    beschreibung:
+      "Flachdach-Anlage auf der Sportplatz-Tribüne mit Batteriespeicher zur Lastverschiebung in die Abendstunden (Flutlichtbetrieb). Ergänzt um einen 22-kW-Ladepunkt.",
+    bildPlatzhalter: "Sportplatz – Flachdach-PV",
+    bildSrc: "/images/standorte/sportplatz.webp",
+  },
+
+  // ── PHASE 2 — mittelfristig ────────────────────────────────────────────
+  {
+    slug: "raiffeisen-parkplatz",
+    name: "Raiffeisen Parkplatz",
+    phase: 2,
+    typ: "Carport",
+    adresse: "Neustiftgasse 10",
+    module: 174,
+    leistung_kWp: 78.3,
+    beschreibung:
+      "Carport-Anlage am Raiffeisen-Parkplatz mit Schnelllade-Infrastruktur (100 kW) und einem zusätzlichen 22-kW-Ladepunkt — hohe Sichtbarkeit und starkes Eigennutzungspotenzial.",
+    bildPlatzhalter: "Raiffeisen Parkplatz – Carport-PV",
+  },
+  {
     slug: "kindergarten-aufeld",
     name: "Kindergarten Aufeld",
-    typ: "Aufdach (Repowering)",
-    leistung_kWp: 26.10,
-    speicher_kWh: 27,
+    phase: 2,
+    typ: "Aufdach (Blechfalz)",
+    adresse: "Aufeldstraße 8",
+    module: 49,
+    leistung_kWp: 22.05,
+    speicher_kWh: 36,
     beschreibung:
-      "Repowering der bestehenden PV-Anlage am Kindergarten — neue, leistungsfähigere Module bei gleicher Dachfläche, plus Batteriespeicher.",
+      "PV-Anlage auf dem Blechfalzdach des Kindergartens Aufeld inklusive Batteriespeicher für eine hohe Eigenversorgung über den Tag.",
     bildPlatzhalter: "Kindergarten Aufeld – Aufdach",
     bildSrc: "/images/standorte/kindergarten-aufeld.webp",
   },
   {
+    slug: "bauhof",
+    name: "Bauhof",
+    phase: 2,
+    typ: "Flachdach (Kies)",
+    adresse: "Neustiftgasse 50",
+    module: 130,
+    leistung_kWp: 58.5,
+    speicher_kWh: 36,
+    beschreibung:
+      "Flachdach-Anlage (Kiesdach) auf dem Bauhof mit Batteriespeicher — deckt den Eigenbedarf der gemeindeeigenen Fahrzeuge und Geräte.",
+    bildPlatzhalter: "Bauhof – Flachdach-PV",
+  },
+  {
+    slug: "polizei",
+    name: "Polizei",
+    phase: 2,
+    typ: "Bestand",
+    adresse: "Schubertgasse 1",
+    speicher_kWh: 24,
+    notstrom: true,
+    besonderheit: "Bestand — nur Speicher & Notstrom",
+    beschreibung:
+      "Bestandsgebäude — Ergänzung um Batteriespeicher und Notstromsystem. Macht den Polizeistandort blackoutfähig, ohne neue PV-Fläche.",
+    bildPlatzhalter: "Polizei – Speicher & Notstrom",
+  },
+
+  // ── PHASE 3 — langfristig ──────────────────────────────────────────────
+  {
     slug: "posthaus",
     name: "Posthaus Böheimkirchen",
+    phase: 3,
     typ: "Indach",
-    leistung_kWp: 22.77,
-    besonderheit: "Indachsystem (gebäudeintegriert)",
+    adresse: "Untere Hauptstraße 7",
+    module: 56,
+    leistung_kWp: 18.48,
+    besonderheit: "Indachsystem (330-W-Module, gebäudeintegriert)",
     beschreibung:
-      "Indachsystem statt klassischer Aufdach-Montage — die PV-Module ersetzen Teile der Dacheindeckung und fügen sich optisch in das Gebäudebild ein.",
+      "Gebäudeintegriertes Indachsystem mit 330-W-Modulen — die Module ersetzen Teile der Dacheindeckung und fügen sich optisch in das Gebäudebild ein.",
     bildPlatzhalter: "Posthaus – Indachsystem",
     bildSrc: "/images/standorte/posthaus.webp",
   },
   {
-    slug: "gemeindeamt",
-    name: "Gemeindeamt Böheimkirchen",
-    typ: "Aufdach (Solumera)",
-    leistung_kWp: 18,
-    speicher_kWh: 36,
-    notstrom: true,
-    besonderheit: "Denkmalschutz — Solumera-System",
-    beschreibung:
-      "Denkmalgeschütztes Gebäude — Einsatz des Solumera-Systems, das optisch unauffällig in die historische Dachstruktur integriert wird. Mit Notstromsystem als blackoutfähiger Verwaltungsstandort.",
-    bildPlatzhalter: "Gemeindeamt – Solumera-Integration",
-    bildSrc: "/images/standorte/gemeindeamt.webp",
+    slug: "volksschule",
+    name: "Volksschule",
+    phase: 3,
+    status: "Berechnung erfolgt noch",
   },
   {
-    slug: "sportplatz",
-    name: "Sportplatz Böheimkirchen",
-    typ: "Aufdach (Flachdach)",
-    leistung_kWp: 14.40,
-    speicher_kWh: 36,
-    beschreibung:
-      "Flachdach-Aufdach-Anlage am Sportplatz-Gebäude mit Batteriespeicher zur Lastverschiebung in die Abendstunden (Flutlichtbetrieb).",
-    bildPlatzhalter: "Sportplatz – Flachdach-PV",
-    bildSrc: "/images/standorte/sportplatz.webp",
+    slug: "kindergarten-mauterheim",
+    name: "Kindergarten Mauterheim",
+    phase: 3,
+    status: "Berechnung erfolgt noch",
+  },
+  {
+    slug: "pve",
+    name: "PVE",
+    phase: 3,
+    status: "Abklärung Gebäude & Nutzung",
+  },
+  {
+    slug: "friedhof",
+    name: "Friedhof",
+    phase: 3,
+    status: "Berechnung erfolgt noch",
+  },
+  {
+    slug: "gemeindeamt",
+    name: "Gemeindeamt Böheimkirchen",
+    phase: 3,
+    status: "Berechnung erfolgt noch",
   },
 ];
+
+// Phasen-Metadaten inkl. Summen aus der Standort-Tabelle (Phase 1 & 2).
+export const phasen = [
+  {
+    nummer: 1 as Phase,
+    titel: "Phase 1 — Kurzfristig",
+    zeitrahmen: "Sofortige Umsetzung",
+    summe: { module: 730, leistung_kWp: 328.5, speicher_kWh: 108 },
+  },
+  {
+    nummer: 2 as Phase,
+    titel: "Phase 2 — Mittelfristig",
+    zeitrahmen: "Beschluss im Herbst · Umsetzung Q1–Q3 2027",
+    summe: { module: 353, leistung_kWp: 158.85, speicher_kWh: 96 },
+  },
+  {
+    nummer: 3 as Phase,
+    titel: "Phase 3 — Langfristig",
+    zeitrahmen: "Beschluss Q3/Q4 2027 · Umsetzung 2028",
+    summe: null,
+  },
+] as const;
 
 export const ergebnis = {
   gesamtLeistung_kWp: 386.82,
