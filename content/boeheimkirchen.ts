@@ -335,20 +335,112 @@ export const wirtschaftlichkeit = {
   mindestfoerderung_eur: 267434.13,
 } as const;
 
-export const ladestationen = {
-  anzahl: 4,
-  leistungProStation_kWh: 22,
-  anschaffungskosten_eur: 12000,
-  tarifOeffentlich_ct_kWh: 87,
-  durchschnittlicherTankvorgang_kWh: 50,
-  fahrzeugeProStation: 2,
-  tageProWoche: 4,
-  ladevorgaengeProJahr: 1664,
-  ladeleistung_kWh_proJahr: 83200,
-  bruttoEinnahmen_eur: 72384,
-  anteilGemeinde_eur: 57907.20,
-  anteilAbrechnung_eur: 14476.80,
-  amortisation_monate: 4.8,
+// ── Benefits ──────────────────────────────────────────────────────────────
+// Drei gleichwertige Mehrwerte des Konzepts: Finanzierung (Kapazitätsleasing),
+// Digitalisierung (Partnernetzwerk) und eine Video-Visualisierung der Anlage.
+
+// BENEFIT 1 — Finanzierung über Kapazitätsleasing.
+// Eckdaten aus dem Richtangebot (Consulting Gassner, Stand 01.04.2026).
+export const finanzierung = {
+  stand: "01.04.2026",
+  preisProKwh_ct: 15.0,
+  laufzeit_jahre: 13.8,
+  anschaffungswertNetto_eur: 871871,
+  pvLeistung_kWp: 386,
+  speicher_kWh: 216,
+  vorteile: [
+    {
+      icon: "RefreshCw",
+      text: "Flexible Rückzahlung anhand der tatsächlichen Stromproduktion zum Fixtarif",
+    },
+    {
+      icon: "Receipt",
+      text: "Steuerlich absetzbar — die variable Rate ist zur Gänze absetzbar",
+    },
+    {
+      icon: "Coins",
+      text: "Mit Förderungen kombinierbar",
+    },
+    {
+      icon: "Activity",
+      text: "Laufendes Monitoring der Anlage durch Datenanbindung",
+    },
+    {
+      icon: "Wallet",
+      text: "Schonung der Liquidität — Leasingrate pro kWh statt hoher Anschaffungskosten",
+    },
+    {
+      icon: "Landmark",
+      text: "Erhöht den Schuldenstand der Gemeinde nicht — reine Miete ohne Kaufverpflichtung; nur die laufenden Leasingzahlungen sind im Schuldennachweis anzuführen",
+    },
+  ],
+  // Illustrativer Jahresverlauf für das Visual „Leasingrate folgt dem PV-Ertrag“.
+  // Balken = PV-Ertrag (kWh), Linie = flexible Leasingrate (kWh × Fixpreis).
+  monatsverlauf: [
+    { monat: "Jän", ertrag_kWh: 11000 },
+    { monat: "Feb", ertrag_kWh: 18000 },
+    { monat: "Mär", ertrag_kWh: 29000 },
+    { monat: "Apr", ertrag_kWh: 42000 },
+    { monat: "Mai", ertrag_kWh: 49000 },
+    { monat: "Jun", ertrag_kWh: 51000 },
+    { monat: "Jul", ertrag_kWh: 52000 },
+    { monat: "Aug", ertrag_kWh: 46000 },
+    { monat: "Sep", ertrag_kWh: 34000 },
+    { monat: "Okt", ertrag_kWh: 22000 },
+    { monat: "Nov", ertrag_kWh: 13000 },
+    { monat: "Dez", ertrag_kWh: 9000 },
+  ],
+} as const;
+
+// BENEFIT 2 — Digitalisierung: Partnernetzwerk.
+// Logos werden unter /images/partners/<key>.png ergänzt (optional, mit Fallback).
+export const partner: {
+  key: string;
+  name: string;
+  tagline: string;
+  beschreibung: string;
+  url: string;
+  logoSrc: string;
+  pdf?: string;
+}[] = [
+  {
+    key: "connesso",
+    name: "connesso",
+    tagline: "Beratung für erneuerbare Energien",
+    beschreibung:
+      "Beratung für Photovoltaik, Wind- und Wasserkraft sowie Biogas und Biomasse. connesso begleitet Energiegemeinschaften bei Gründung und Abwicklung und ist Spezialist für Förderungen (z. B. Erneuerbaren-Ausbau-Gesetz). „connesso“ ist italienisch für „verbunden“.",
+    url: "https://www.connesso.at/",
+    logoSrc: "/images/partners/connesso.png",
+  },
+  {
+    key: "vantatsch",
+    name: "Nadine Van Tatsch",
+    tagline: "The Human Touch in the Age of AI",
+    beschreibung:
+      "KI-Enablement, Coaching und Trainings für Unternehmen, Führungskräfte und Professionals. Baut KI-Kompetenz, Resilienz und Mindset auf, um KI wirksam und menschenzentriert einzusetzen.",
+    url: "https://www.vantatsch.com/",
+    logoSrc: "/images/partners/vantatsch.png",
+    pdf: "/pdf/van-tatsch-the-human-touch-in-the-age-of-ai.pdf",
+  },
+  {
+    key: "netnomic",
+    name: "NetNomic",
+    tagline: "Websites · KI-Automatisierungen · IT",
+    beschreibung:
+      "Moderne, schnelle und mobil-optimierte Websites sowie KI-Automatisierungen (n8n-Flows, Chatbots, Buchungssysteme, Kalender- und Mail-Flows). EU-Cloud-Hosting und IT-Dienstleistungen — lokale Betreuung für regionale Betriebe.",
+    url: "https://netnomic.at/",
+    logoSrc: "/images/partners/netnomic.png",
+  },
+];
+
+// BENEFIT 3 — Video: Visualisierung einer PV-Anlage im Betrieb.
+// MP4 wird unter /videos/<datei> abgelegt.
+export const video = {
+  src: "/videos/pv-anlage-betrieb.mp4",
+  poster: undefined as string | undefined,
+  titel: "Die Anlage im Betrieb",
+  beschreibung:
+    "Eine Visualisierung zeigt das Zusammenspiel von Erzeugung, Speicher und Verbrauch — so wie sich die Anlage im laufenden Betrieb überwachen lässt.",
 } as const;
 
 export const kontakt = {
