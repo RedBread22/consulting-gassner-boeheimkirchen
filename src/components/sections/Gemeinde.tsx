@@ -3,29 +3,20 @@
 import {
   MapPin,
   User,
-  Calendar,
   Map,
   Users,
-  Navigation,
   Maximize,
-  Route,
   Landmark,
   Vote,
   type LucideIcon,
 } from "lucide-react";
-import {
-  gemeinde,
-  vorOrtTermin,
-  gemeindeFakten,
-} from "../../../content/boeheimkirchen";
+import { gemeinde, gemeindeFakten } from "../../../content/boeheimkirchen";
 import { SectionWrapper } from "../ui/SectionWrapper";
 
 const faktenIcons: Record<string, LucideIcon> = {
   Map,
   Users,
-  Navigation,
   Maximize,
-  Route,
   Landmark,
   Vote,
 };
@@ -60,19 +51,6 @@ export function Gemeinde() {
               {gemeinde.buergermeister.name}
             </p>
             <p className="text-sm text-fg-muted">{gemeinde.buergermeister.partei}</p>
-          </div>
-        </div>
-
-        <div className="flex gap-4">
-          <Calendar className="w-5 h-5 text-fg-muted mt-1 flex-shrink-0" strokeWidth={1.5} />
-          <div>
-            <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-1">
-              Vor-Ort-Termin
-            </p>
-            <p className="text-lg">{vorOrtTermin.datum}</p>
-            <p className="text-sm text-fg-muted">
-              {vorOrtTermin.dauer}, {vorOrtTermin.ort}
-            </p>
           </div>
         </div>
 

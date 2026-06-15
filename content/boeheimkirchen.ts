@@ -32,22 +32,10 @@ export const gemeindeFakten: {
     sub: "Stand 1. Jänner 2024",
   },
   {
-    icon: "Navigation",
-    label: "Lage",
-    value: "10 km östlich von St. Pölten",
-    sub: "an Michelbach und Perschling",
-  },
-  {
     icon: "Maximize",
     label: "Fläche",
     value: "45,55 km²",
     sub: "66 % landwirtschaftlich, 22 % bewaldet",
-  },
-  {
-    icon: "Route",
-    label: "Verkehr",
-    value: "Westautobahn (A1)",
-    sub: "und alte Westbahn-Strecke",
   },
   {
     icon: "Landmark",
@@ -446,13 +434,15 @@ export const video = {
 export const kontakt = {
   unternehmen: "Consulting Gassner",
   ansprechpartner: "Christoph Gassner",
+  beschreibung:
+    "Energieberatung für Gemeinden und Betriebe. Seit vielen Jahren in der Energiebranche — analysiert Energieverbräuche, deckt Einsparpotenziale auf und filtert passende Fördermöglichkeiten heraus. Erarbeitet wirtschaftlich optimale, förderfähige Energiekonzepte — von der Analyse über die wirtschaftliche Auslegung bis zur Umsetzungsplanung.",
   adresse: "Rödschitz 105, 8983 Bad Mitterndorf",
   land: "Austria",
   telefon: "+43 664 5325555",
   email: "info@consulting-gassner.at",
   website: "www.consulting-gassner.at",
   terminBuchenUrl: "https://www.consulting-gassner.at/blank-4",
-  logoSrc: "/logos/gassner-consulting.png",
+  logoSrc: "/images/logos/Gassner-Hoelzl.jpeg",
 } as const;
 
 // Partner für die Umsetzung — Mario Hölzl, MHZ Beratung.
