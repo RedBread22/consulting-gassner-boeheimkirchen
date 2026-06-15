@@ -183,6 +183,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Carport-Anlage am Raiffeisen-Parkplatz mit Schnelllade-Infrastruktur (100 kW) und einem zusätzlichen 22-kW-Ladepunkt — hohe Sichtbarkeit und starkes Eigennutzungspotenzial.",
     bildPlatzhalter: "Raiffeisen Parkplatz – Carport-PV",
+    bildSrc: "/images/standorte/raiffeisen-parkplatz.webp",
     pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Raiffeisen_Parkplatz_Carport.pdf",
   },
   {
@@ -212,6 +213,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Flachdach-Anlage (Kiesdach) auf dem Bauhof mit Batteriespeicher — deckt den Eigenbedarf der gemeindeeigenen Fahrzeuge und Geräte.",
     bildPlatzhalter: "Bauhof – Flachdach-PV",
+    bildSrc: "/images/standorte/bauhof.webp",
     pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Bauhof.pdf",
   },
   {
@@ -226,6 +228,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Bestandsgebäude — Ergänzung um Batteriespeicher und Notstromsystem. Macht den Polizeistandort blackoutfähig, ohne neue PV-Fläche.",
     bildPlatzhalter: "Polizei – Speicher & Notstrom",
+    bildSrc: "/images/standorte/polizei.webp",
   },
 
   // ── PHASE 3 — langfristig ──────────────────────────────────────────────
@@ -248,26 +251,31 @@ export const standorte: Standort[] = [
     slug: "volksschule",
     name: "Volksschule",
     phase: 3,
+    bildSrc: "/images/standorte/volksschule.webp",
   },
   {
     slug: "kindergarten-mauterheim",
     name: "Kindergarten Mauterheim",
     phase: 3,
+    bildSrc: "/images/standorte/kindergarten-mauterheim.webp",
   },
   {
     slug: "pve",
     name: "PVE",
     phase: 3,
+    bildSrc: "/images/standorte/pve.webp",
   },
   {
     slug: "friedhof",
     name: "Friedhof",
     phase: 3,
+    bildSrc: "/images/standorte/friedhof.webp",
   },
   {
     slug: "gemeindeamt",
     name: "Gemeindeamt Böheimkirchen",
     phase: 3,
+    bildSrc: "/images/standorte/gemeindeamt.webp",
   },
 ];
 
