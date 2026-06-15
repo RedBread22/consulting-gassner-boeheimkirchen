@@ -1,27 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { gemeinde, aktuellerStand, ergebnis } from "../../../content/boeheimkirchen";
-import { PieChartDisplay } from "../ui/PieChartVorherNachher";
+import { gemeinde } from "../../../content/boeheimkirchen";
 
 export function Hero() {
-  const [showNachher, setShowNachher] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowNachher(true), 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const eigennutzen = showNachher
-    ? ergebnis.pvNachher.eigennutzen_prozent
-    : aktuellerStand.pv.eigennutzen_prozent;
-  const ueberschuss = showNachher
-    ? ergebnis.pvNachher.ueberschuss_prozent
-    : aktuellerStand.pv.ueberschuss_prozent;
-
   return (
     <section className="min-h-screen flex items-center pt-16 relative bg-bg">
       <div className="max-w-content mx-auto px-6 w-full">
@@ -51,23 +35,23 @@ export function Hero() {
 
             <p className="mt-6 text-lg md:text-xl text-fg-muted leading-relaxed max-w-xl">
               Eine wirtschaftlich optimale, förderfähige Energielösung für die{" "}
-              {gemeinde.name} — erarbeitet von Consulting Gassner.
+              {gemeinde.name}.
             </p>
           </motion.div>
 
           <motion.div
-            className="flex-shrink-0"
+            className="flex-shrink-0 w-56 sm:w-64 lg:w-72"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.3 }}
           >
-            <p className="text-xs uppercase tracking-[0.15em] text-fg-muted text-center mb-4">
-              Eigennutzen-Quote {showNachher ? "nachher" : "vorher"}
-              {!showNachher && " → nachher"}
-            </p>
-            <PieChartDisplay
-              eigennutzen={eigennutzen}
-              ueberschuss={ueberschuss}
+            <Image
+              src="/images/logos/wappen-boeheimkirchen.png"
+              alt={`Wappen ${gemeinde.name}`}
+              width={288}
+              height={288}
+              priority
+              className="w-full h-auto mx-auto"
             />
           </motion.div>
         </div>

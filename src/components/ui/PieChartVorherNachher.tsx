@@ -7,11 +7,20 @@ type Props = {
   ueberschuss: number;
   label?: string;
   accentColor?: string;
+  eigennutzenKwh?: string;
+  ueberschussKwh?: string;
 };
 
 const LIGHT_COLOR = "#D0D0CC";
 
-export function PieChartDisplay({ eigennutzen, ueberschuss, label, accentColor }: Props) {
+export function PieChartDisplay({
+  eigennutzen,
+  ueberschuss,
+  label,
+  accentColor,
+  eigennutzenKwh,
+  ueberschussKwh,
+}: Props) {
   const darkColor = accentColor || "#111111";
   const data = [
     { value: eigennutzen },
@@ -43,12 +52,22 @@ export function PieChartDisplay({ eigennutzen, ueberschuss, label, accentColor }
       </ResponsiveContainer>
       <div className="flex justify-center gap-8 mt-6 text-sm">
         <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-fg" />
-          <span>{eigennutzen}% Eigennutzen</span>
+          <span className="w-3 h-3 rounded-full bg-fg flex-shrink-0" />
+          <span>
+            {eigennutzen}% Eigennutzen
+            {eigennutzenKwh && (
+              <span className="block text-fg-muted">{eigennutzenKwh} kWh</span>
+            )}
+          </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-[#D0D0CC]" />
-          <span>{ueberschuss}% Überschuss</span>
+          <span className="w-3 h-3 rounded-full bg-[#D0D0CC] flex-shrink-0" />
+          <span>
+            {ueberschuss}% Überschuss
+            {ueberschussKwh && (
+              <span className="block text-fg-muted">{ueberschussKwh} kWh</span>
+            )}
+          </span>
         </div>
       </div>
       {label && (
