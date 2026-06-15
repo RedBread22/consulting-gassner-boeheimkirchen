@@ -46,7 +46,7 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.3 }}
           >
             <Image
-              src="/images/logos/wappen-boeheimkirchen.png"
+              src="/images/logos/wappen-boeheimkirchen.webp"
               alt={`Wappen ${gemeinde.name}`}
               width={288}
               height={288}

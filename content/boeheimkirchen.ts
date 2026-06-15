@@ -8,7 +8,7 @@ export const gemeinde = {
     name: "Franz Haunold",
     partei: "SPÖ",
   },
-  logoSrc: "/logos/marktgemeinde-boeheimkirchen.png",
+  logoSrc: "/images/logos/marktgemeinde-boeheimkirchen.webp",
   accentColor: "#C9322B",
   accentWarm: "#F4A623",
 } as const;
