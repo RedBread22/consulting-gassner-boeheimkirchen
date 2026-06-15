@@ -454,3 +454,17 @@ export const kontakt = {
   terminBuchenUrl: "https://www.consulting-gassner.at/blank-4",
   logoSrc: "/logos/gassner-consulting.png",
 } as const;
+
+// Partner für die Umsetzung — Mario Hölzl, MHZ Beratung.
+export const kontaktPartner = {
+  unternehmen: "MHZ Beratung",
+  ansprechpartner: "Mario Hölzl",
+  beschreibung:
+    "Projektbegleitung und Beratung für Betriebe und Kommunen — seit über 8 Jahren. Schwerpunkte: Photovoltaik, Straßenbeleuchtung, Innenbeleuchtung und Flutlicht. Unabhängige, produktneutrale und maßgeschneiderte Gesamtlösungen — inkl. Optimierung, Konzeptionierung und Förderbegleitung.",
+  adresse: "Quellstrasse 16, 3243 St. Leonhard/Forst",
+  land: "Austria",
+  telefon: "+43 664 645 0303",
+  email: "mhz-beratung@outlook.com",
+  website: "www.mhz-beratung.at",
+  websiteUrl: "https://www.mhz-beratung.at/",
+} as const;

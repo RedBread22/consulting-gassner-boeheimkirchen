@@ -181,7 +181,7 @@ function Finanzierung() {
 function PartnerLogo({
   src,
   alt,
-  className = "h-12 w-auto max-w-[180px] object-contain object-left",
+  className = "h-16 md:h-20 w-auto max-w-[240px] object-contain object-left",
 }: {
   src: string;
   alt: string;
@@ -403,7 +403,7 @@ function PartnerKarte({
     >
       <PartnerLogo src={p.logoSrc} alt={p.name} />
 
-      <p className="mt-5 text-xs uppercase tracking-[0.12em] text-fg-muted">
+      <p className="mt-6 text-xs uppercase tracking-[0.12em] text-fg-muted">
         {p.tagline}
       </p>
       <p className="mt-3 flex-1 text-base leading-relaxed text-fg-muted">
@@ -498,8 +498,11 @@ function VideoBenefit() {
 
       {/* Nahtlose, dauerhaft laufende Animation — kein klassischer Player.
           autoPlay/loop/muted/playsInline (muted ist Pflicht fürs Autoplay),
-          keine Controls, kein Play-Overlay, kein Vollbild-Button. */}
-      <div className="rounded-xl overflow-hidden border border-border bg-fg">
+          keine Controls, kein Play-Overlay, kein Vollbild-Button.
+          Quelle ist 480×528 (≈10:11, leicht hochformatig): object-contain +
+          natives Seitenverhältnis zeigt das ganze Bild ohne Beschnitt, und die
+          max-width = native Breite verhindert unscharfes Hochskalieren. */}
+      <div className="mx-auto w-full max-w-[480px] overflow-hidden rounded-xl border border-border bg-fg">
         <video
           autoPlay
           loop
@@ -507,7 +510,8 @@ function VideoBenefit() {
           playsInline
           preload="auto"
           poster={video.poster}
-          className="w-full aspect-video object-cover bg-fg"
+          style={{ aspectRatio: "480 / 528" }}
+          className="w-full object-contain bg-fg"
         >
           <source src={video.src} type="video/mp4" />
           Ihr Browser unterstützt das Video-Element nicht.
