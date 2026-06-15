@@ -13,6 +13,55 @@ export const gemeinde = {
   accentWarm: "#F4A623",
 } as const;
 
+export const gemeindeFakten: {
+  icon: string;
+  label: string;
+  value: string;
+  sub?: string;
+}[] = [
+  {
+    icon: "Map",
+    label: "Region",
+    value: "Mostviertel",
+    sub: "Marktgemeinde in Niederösterreich",
+  },
+  {
+    icon: "Users",
+    label: "Einwohner",
+    value: "5.243",
+    sub: "Stand 1. Jänner 2024",
+  },
+  {
+    icon: "Navigation",
+    label: "Lage",
+    value: "10 km östlich von St. Pölten",
+    sub: "an Michelbach und Perschling",
+  },
+  {
+    icon: "Maximize",
+    label: "Fläche",
+    value: "45,55 km²",
+    sub: "66 % landwirtschaftlich, 22 % bewaldet",
+  },
+  {
+    icon: "Route",
+    label: "Verkehr",
+    value: "Westautobahn (A1)",
+    sub: "und alte Westbahn-Strecke",
+  },
+  {
+    icon: "Landmark",
+    label: "Gliederung",
+    value: "27 Ortschaften",
+    sub: "21 Katastralgemeinden",
+  },
+  {
+    icon: "Vote",
+    label: "Gemeinderat",
+    value: "25 Mitglieder",
+  },
+];
+
 export const vorOrtTermin = {
   datum: "16. Januar 2026",
   dauer: "1,5 Stunden",
