@@ -1,6 +1,10 @@
 "use client";
 
-import { ergebnis, wirtschaftlichkeit } from "../../../content/boeheimkirchen";
+import {
+  aktuellerStand,
+  ergebnis,
+  wirtschaftlichkeit,
+} from "../../../content/boeheimkirchen";
 import { SectionWrapper } from "../ui/SectionWrapper";
 import { PieChartDisplay } from "../ui/PieChartVorherNachher";
 
@@ -8,16 +12,136 @@ function formatNumber(n: number): string {
   return n.toLocaleString("de-AT", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
+function formatKwp(n: number): string {
+  return n.toLocaleString("de-AT", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+}
+
 function formatEur(n: number): string {
   return n.toLocaleString("de-AT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 export function Ergebnis() {
+  const pvHeute = aktuellerStand.pv.groesse_kWp;
+  const pvNachher = ergebnis.pvNachher.leistung_kWp;
+  const pvFaktor = (pvNachher / pvHeute).toLocaleString("de-AT", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+
   return (
     <SectionWrapper id="ergebnis" soft>
       <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-16">
         Das Ergebnis: vom Verbraucher zum Selbstversorger
       </h2>
+
+      {/* Direkter Vergleich Ist-Zustand ↔ Vollausbau */}
+      <div className="mb-20">
+        <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-6">
+          Heute vs. nach Umsetzung
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+          {/* HEUTE */}
+          <div className="rounded-2xl border border-border p-6 md:p-8">
+            <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-6">
+              Heute (Ist-Zustand)
+            </p>
+            <dl className="space-y-5">
+              <div>
+                <dt className="text-sm text-fg-muted">Bestehende PV-Leistung</dt>
+                <dd className="font-serif text-3xl">{formatKwp(pvHeute)} kWp</dd>
+              </div>
+              <div>
+                <dt className="text-sm text-fg-muted">Eigennutzungsquote</dt>
+                <dd className="font-serif text-3xl">
+                  {aktuellerStand.pv.eigennutzen_prozent} %
+                  <span className="text-base text-fg-muted ml-2">
+                    / {aktuellerStand.pv.ueberschuss_prozent} % Überschuss
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-fg-muted">Stromkosten / Jahr</dt>
+                <dd className="font-serif text-3xl">
+                  {formatEur(aktuellerStand.gesamtkosten_eur)} €
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          {/* NACHHER */}
+          <div className="rounded-2xl bg-fg text-bg p-6 md:p-8">
+            <p className="text-xs uppercase tracking-[0.15em] text-bg/60 mb-6">
+              Nach Vollausbau
+            </p>
+            <dl className="space-y-5">
+              <div>
+                <dt className="text-sm text-bg/60">PV-Leistung</dt>
+                <dd className="font-serif text-3xl">
+                  {formatKwp(pvNachher)} kWp
+                  <span className="text-base text-bg/60 ml-2">≈ {pvFaktor}×</span>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-bg/60">Eigennutzungsquote</dt>
+                <dd className="font-serif text-3xl">
+                  {ergebnis.pvNachher.eigennutzen_prozent} %
+                  <span className="text-base text-bg/60 ml-2">
+                    / {ergebnis.pvNachher.ueberschuss_prozent} % Überschuss
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm text-bg/60">Einsparung / Jahr (nach Finanzierung)</dt>
+                <dd className="font-serif text-3xl">
+                  {formatEur(wirtschaftlichkeit.einsparungProJahr_nachFinanzierung_eur)} €
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        {/* PV-Leistung als Balkenvergleich */}
+        <div className="mt-8 space-y-4">
+          <div>
+            <div className="flex justify-between text-sm mb-2">
+              <span className="text-fg-muted">PV-Leistung heute</span>
+              <span className="tabular-nums">{formatKwp(pvHeute)} kWp</span>
+            </div>
+            <div className="h-3 rounded-full bg-border overflow-hidden">
+              <div
+                className="h-full rounded-full bg-fg-muted"
+                style={{ width: `${(pvHeute / pvNachher) * 100}%` }}
+              />
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-between text-sm mb-2">
+              <span className="font-medium">PV-Leistung nach Vollausbau</span>
+              <span className="tabular-nums font-medium">{formatKwp(pvNachher)} kWp</span>
+            </div>
+            <div className="h-3 rounded-full bg-border overflow-hidden">
+              <div className="h-full w-full rounded-full bg-fg" />
+            </div>
+          </div>
+        </div>
+
+        <p className="mt-8 text-base md:text-lg text-fg-muted leading-relaxed max-w-2xl">
+          Rund <span className="text-fg font-medium">{pvFaktor}× mehr PV-Leistung</span>,
+          die Eigennutzungsquote steigt von{" "}
+          <span className="text-fg font-medium">
+            {aktuellerStand.pv.eigennutzen_prozent} % auf{" "}
+            {ergebnis.pvNachher.eigennutzen_prozent} %
+          </span>{" "}
+          — und nach der Finanzierung spart die Gemeinde{" "}
+          <span className="text-fg font-medium">
+            {formatEur(wirtschaftlichkeit.einsparungProJahr_nachFinanzierung_eur)} € pro Jahr
+          </span>
+          . Investition: {formatEur(wirtschaftlichkeit.investitionskosten_eur)} €,
+          finanziert in{" "}
+          {wirtschaftlichkeit.finanzierungsdauer_jahre.toLocaleString("de-AT")} Jahren.
+        </p>
+      </div>
 
       <div className="mb-20 text-center">
         <p className="font-serif text-7xl md:text-8xl tracking-tight text-fg">
