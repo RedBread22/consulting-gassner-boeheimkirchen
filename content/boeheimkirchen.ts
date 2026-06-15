@@ -64,7 +64,6 @@ export type Standort = {
   speicher_kWh?: number;
   notstrom?: boolean;
   besonderheit?: string;
-  status?: string;
   beschreibung?: string;
   bildPlatzhalter?: string;
   bildSrc?: string;
@@ -203,31 +202,26 @@ export const standorte: Standort[] = [
     slug: "volksschule",
     name: "Volksschule",
     phase: 3,
-    status: "Berechnung erfolgt noch",
   },
   {
     slug: "kindergarten-mauterheim",
     name: "Kindergarten Mauterheim",
     phase: 3,
-    status: "Berechnung erfolgt noch",
   },
   {
     slug: "pve",
     name: "PVE",
     phase: 3,
-    status: "Abklärung Gebäude & Nutzung",
   },
   {
     slug: "friedhof",
     name: "Friedhof",
     phase: 3,
-    status: "Berechnung erfolgt noch",
   },
   {
     slug: "gemeindeamt",
     name: "Gemeindeamt Böheimkirchen",
     phase: 3,
-    status: "Berechnung erfolgt noch",
   },
 ];
 
