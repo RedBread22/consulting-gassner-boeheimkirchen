@@ -10,7 +10,7 @@ const links = [
   { label: "Konzept", anchor: "konzept" },
   { label: "Standorte", anchor: "standorte" },
   { label: "Ergebnis", anchor: "ergebnis" },
-  { label: "Ladestationen", anchor: "ladestationen" },
+  { label: "Benefits", anchor: "benefits" },
   { label: "Kontakt", anchor: "kontakt" },
 ];
 

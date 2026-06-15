@@ -4,7 +4,7 @@ import { AktuellerStand } from "@/components/sections/AktuellerStand";
 import { Konzept } from "@/components/sections/Konzept";
 import { Standorte } from "@/components/sections/Standorte";
 import { Ergebnis } from "@/components/sections/Ergebnis";
-import { Ladestationen } from "@/components/sections/Ladestationen";
+import { Benefits } from "@/components/sections/Benefits";
 import { Kontakt } from "@/components/sections/Kontakt";
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
       <Konzept />
       <Standorte />
       <Ergebnis />
-      <Ladestationen />
+      <Benefits />
       <Kontakt />
     </main>
   );
