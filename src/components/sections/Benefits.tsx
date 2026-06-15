@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import {
   RefreshCw,
@@ -14,6 +15,7 @@ import {
   ArrowRight,
   Globe,
   FileText,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -23,6 +25,8 @@ import {
 } from "../../../content/boeheimkirchen";
 import { SectionWrapper } from "../ui/SectionWrapper";
 import { LeasingChart } from "../ui/LeasingChart";
+
+type Partner = (typeof partner)[number];
 
 const vorteilIcons: Record<string, LucideIcon> = {
   RefreshCw,
@@ -174,12 +178,20 @@ function Finanzierung() {
 
 /* ── Benefit 2 — Digitalisierung ────────────────────────────────────────── */
 
-function PartnerLogo({ src, alt }: { src: string; alt: string }) {
+function PartnerLogo({
+  src,
+  alt,
+  className = "h-12 w-auto max-w-[180px] object-contain object-left",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
   const [fehlt, setFehlt] = useState(false);
 
   if (fehlt) {
     return (
-      <div className="h-12 flex items-center">
+      <div className="flex items-center">
         <span className="font-serif text-xl tracking-tight">{alt}</span>
       </div>
     );
@@ -191,22 +203,210 @@ function PartnerLogo({ src, alt }: { src: string; alt: string }) {
       src={src}
       alt={alt}
       onError={() => setFehlt(true)}
-      className="h-12 w-auto max-w-[180px] object-contain object-left"
+      className={className}
     />
   );
 }
 
-function PartnerKarte({ p }: { p: (typeof partner)[number] }) {
-  const [pdfOffen, setPdfOffen] = useState(false);
+/* Modal/Overlay mit den vollen Infos zu einem Partner.
+   Schließbar per X, Backdrop-Klick und ESC. Body-Scroll gesperrt, Fokus-Falle,
+   Fokus kehrt beim Schließen auf das auslösende Element zurück. */
+function PartnerModal({
+  p,
+  scrollToPdf,
+  onClose,
+}: {
+  p: Partner;
+  scrollToPdf: boolean;
+  onClose: () => void;
+}) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const pdfRef = useRef<HTMLDivElement>(null);
 
+  // Body-Scroll sperren + Fokus beim Schließen zurückgeben
+  useEffect(() => {
+    const zuvorFokussiert = document.activeElement as HTMLElement | null;
+    const overflowVorher = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = overflowVorher;
+      zuvorFokussiert?.focus?.();
+    };
+  }, []);
+
+  // ESC zum Schließen + Fokus-Falle (Tab bleibt im Modal)
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const panel = panelRef.current;
+      if (!panel) return;
+      const focusable = Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => el.offsetParent !== null || el.tagName === "IFRAME");
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
+  // Initialer Fokus ins Modal — ggf. direkt zur eingebetteten PDF scrollen
+  useEffect(() => {
+    const panel = panelRef.current;
+    const erstes = panel?.querySelector<HTMLElement>(
+      'button, a[href], [tabindex]:not([tabindex="-1"])',
+    );
+    erstes?.focus();
+
+    if (scrollToPdf && pdfRef.current) {
+      pdfRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [scrollToPdf]);
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[100] flex items-stretch justify-center bg-fg/60 backdrop-blur-sm sm:items-center sm:p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`partner-modal-${p.key}`}
+        initial={{ opacity: 0, scale: 0.97, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative flex h-full w-full max-w-xl flex-col overflow-y-auto bg-bg shadow-2xl sm:h-auto sm:max-h-[90vh] sm:rounded-2xl"
+      >
+        {/* Kopf mit Schließen-Button (bleibt beim Scrollen sichtbar) */}
+        <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-border bg-bg/95 px-6 py-5 backdrop-blur md:px-8">
+          <PartnerLogo
+            src={p.logoSrc}
+            alt={p.name}
+            className="h-11 w-auto max-w-[200px] object-contain object-left"
+          />
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Schließen"
+            className="flex-shrink-0 -mr-2 -mt-1 flex h-9 w-9 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-bg-soft hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            <X className="h-5 w-5" strokeWidth={1.5} />
+          </button>
+        </div>
+
+        {/* Inhalt: Name, Steckbrieftext, Website-Link */}
+        <div className="px-6 py-6 md:px-8">
+          <h3
+            id={`partner-modal-${p.key}`}
+            className="font-serif text-2xl tracking-tight md:text-3xl"
+          >
+            {p.name}
+          </h3>
+          <p className="mt-2 text-xs uppercase tracking-[0.12em] text-fg-muted">
+            {p.tagline}
+          </p>
+          <p className="mt-5 text-base leading-relaxed text-fg-muted">
+            {p.beschreibung}
+          </p>
+
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <a
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-accent"
+            >
+              <Globe className="h-4 w-4" strokeWidth={1.5} />
+              Website
+              <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+
+            {p.pdf && (
+              <a
+                href={p.pdf}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm text-fg-muted transition-colors hover:text-fg"
+              >
+                <FileText className="h-4 w-4" strokeWidth={1.5} />
+                PDF in neuem Tab öffnen
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Speziell für Van Tatsch: PDF unten eingebettet, eigener Scroll */}
+        {p.pdf && (
+          <div
+            ref={pdfRef}
+            className="border-t border-border px-6 pb-6 pt-5 md:px-8"
+          >
+            <p className="mb-3 text-xs uppercase tracking-[0.12em] text-fg-muted">
+              Steckbrief als PDF
+            </p>
+            <div className="h-[60vh] w-full overflow-hidden rounded-lg border border-border bg-bg-soft sm:h-[520px]">
+              <iframe
+                src={p.pdf}
+                title={`PDF ${p.name}`}
+                className="h-full w-full"
+              />
+            </div>
+          </div>
+        )}
+      </motion.div>
+    </div>,
+    document.body,
+  );
+}
+
+function PartnerKarte({
+  p,
+  onOpen,
+}: {
+  p: Partner;
+  onOpen: (scrollToPdf: boolean) => void;
+}) {
   return (
-    <div className="flex flex-col h-full rounded-xl border border-border bg-bg p-6">
+    <div
+      role="button"
+      tabIndex={0}
+      aria-haspopup="dialog"
+      onClick={() => onOpen(false)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen(false);
+        }
+      }}
+      className="group flex h-full cursor-pointer flex-col rounded-xl border border-border bg-bg p-6 text-left transition-colors hover:border-fg/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+    >
       <PartnerLogo src={p.logoSrc} alt={p.name} />
 
       <p className="mt-5 text-xs uppercase tracking-[0.12em] text-fg-muted">
         {p.tagline}
       </p>
-      <p className="mt-3 text-base leading-relaxed text-fg-muted flex-1">
+      <p className="mt-3 flex-1 text-base leading-relaxed text-fg-muted">
         {p.beschreibung}
       </p>
 
@@ -215,46 +415,44 @@ function PartnerKarte({ p }: { p: (typeof partner)[number] }) {
           href={p.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm font-medium hover:text-accent transition-colors"
+          onClick={(e) => e.stopPropagation()}
+          className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-accent"
         >
-          <Globe className="w-4 h-4" strokeWidth={1.5} />
+          <Globe className="h-4 w-4" strokeWidth={1.5} />
           Website
-          <ArrowRight className="w-3.5 h-3.5" />
+          <ArrowRight className="h-3.5 w-3.5" />
         </a>
 
         {p.pdf && (
           <button
             type="button"
-            onClick={() => setPdfOffen((o) => !o)}
-            aria-expanded={pdfOffen}
-            className="inline-flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpen(true);
+            }}
+            className="inline-flex items-center gap-1.5 text-sm text-fg-muted transition-colors hover:text-fg"
           >
-            <FileText className="w-4 h-4" strokeWidth={1.5} />
-            {pdfOffen ? "PDF ausblenden" : "PDF ansehen"}
+            <FileText className="h-4 w-4" strokeWidth={1.5} />
+            PDF ansehen
           </button>
         )}
       </div>
 
-      {p.pdf && pdfOffen && (
-        <div className="mt-5">
-          <div className="w-full h-[60vh] min-h-[360px] border border-border rounded-lg bg-bg-soft overflow-hidden">
-            <iframe src={p.pdf} title={`PDF ${p.name}`} className="w-full h-full" />
-          </div>
-          <a
-            href={p.pdf}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block mt-3 text-sm text-fg-muted underline hover:text-fg transition-colors"
-          >
-            PDF in neuem Tab öffnen
-          </a>
-        </div>
-      )}
+      <span className="mt-5 inline-flex items-center gap-1 text-xs uppercase tracking-[0.12em] text-fg-muted transition-colors group-hover:text-fg">
+        Mehr erfahren
+        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+      </span>
     </div>
   );
 }
 
 function Digitalisierung() {
+  // Geöffneter Partner + ob direkt zur eingebetteten PDF gescrollt werden soll
+  const [aktiv, setAktiv] = useState<{
+    p: Partner;
+    scrollToPdf: boolean;
+  } | null>(null);
+
   return (
     <BenefitCard
       index={2}
@@ -270,9 +468,21 @@ function Digitalisierung() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {partner.map((p) => (
-          <PartnerKarte key={p.key} p={p} />
+          <PartnerKarte
+            key={p.key}
+            p={p}
+            onOpen={(scrollToPdf) => setAktiv({ p, scrollToPdf })}
+          />
         ))}
       </div>
+
+      {aktiv && (
+        <PartnerModal
+          p={aktiv.p}
+          scrollToPdf={aktiv.scrollToPdf}
+          onClose={() => setAktiv(null)}
+        />
+      )}
     </BenefitCard>
   );
 }
@@ -286,20 +496,21 @@ function VideoBenefit() {
         {video.beschreibung}
       </p>
 
+      {/* Nahtlose, dauerhaft laufende Animation — kein klassischer Player.
+          autoPlay/loop/muted/playsInline (muted ist Pflicht fürs Autoplay),
+          keine Controls, kein Play-Overlay, kein Vollbild-Button. */}
       <div className="rounded-xl overflow-hidden border border-border bg-fg">
         <video
-          controls
-          preload="metadata"
+          autoPlay
+          loop
+          muted
           playsInline
+          preload="auto"
           poster={video.poster}
-          className="w-full aspect-video bg-fg"
+          className="w-full aspect-video object-cover bg-fg"
         >
           <source src={video.src} type="video/mp4" />
-          Ihr Browser unterstützt das Video-Element nicht.{" "}
-          <a href={video.src} className="underline">
-            Video herunterladen
-          </a>
-          .
+          Ihr Browser unterstützt das Video-Element nicht.
         </video>
       </div>
     </BenefitCard>
