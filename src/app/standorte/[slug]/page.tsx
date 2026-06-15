@@ -121,19 +121,17 @@ export default function StandortDetail({ params }: Props) {
             </div>
           )}
 
-          <div>
-            <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-1">
-              Notstrom
-            </p>
-            {standort.notstrom ? (
+          {standort.notstrom === true && (
+            <div>
+              <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-1">
+                Notstrom
+              </p>
               <p className="text-lg flex items-center gap-2 text-accent">
                 <ShieldCheck className="w-5 h-5" strokeWidth={1.5} />
                 Blackoutfähig
               </p>
-            ) : (
-              <p className="text-lg text-fg-muted">Nicht vorgesehen</p>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {standort.besonderheit && (
@@ -144,6 +142,41 @@ export default function StandortDetail({ params }: Props) {
             <p className="text-lg">{standort.besonderheit}</p>
           </div>
         )}
+
+        {standort.pdf && (
+          <div className="mt-12">
+            <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-4">
+              Detailplanung (PDF)
+            </p>
+            <div className="w-full h-[70vh] min-h-[420px] border border-border bg-bg-soft overflow-hidden">
+              <iframe
+                src={standort.pdf}
+                title={`Detailplanung ${standort.name}`}
+                className="w-full h-full"
+              />
+            </div>
+            <p className="text-sm text-fg-muted mt-3">
+              <a
+                href={standort.pdf}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-fg transition-colors"
+              >
+                PDF in neuem Tab öffnen
+              </a>
+            </p>
+          </div>
+        )}
+
+        <div className="mt-12">
+          <Link
+            href="/#standorte"
+            className="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Zurück zur Übersicht
+          </Link>
+        </div>
       </div>
     </main>
   );

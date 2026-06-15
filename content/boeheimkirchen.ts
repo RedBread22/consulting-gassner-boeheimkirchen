@@ -67,6 +67,7 @@ export type Standort = {
   beschreibung?: string;
   bildPlatzhalter?: string;
   bildSrc?: string;
+  pdf?: string;
 };
 
 // Quelle der Wahrheit: Standort-Tabelle. kWp-Werte werden direkt übernommen
@@ -85,6 +86,7 @@ export const standorte: Standort[] = [
       "Überdachung des Mittelschul-Parkplatzes als Carport-Konstruktion mit integrierter Photovoltaik. Doppelter Nutzen: Wetterschutz für die Fahrzeuge und Stromerzeugung über die Mittagsspitze. Mit zwei 22-kW-Ladepunkten direkt am Standort.",
     bildPlatzhalter: "Parkplatz Mittelschule – Carport mit PV",
     bildSrc: "/images/standorte/parkplatz-mittelschule.webp",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Mittelschule_Carport.pdf",
   },
   {
     slug: "parkplatz-bahnhof",
@@ -98,6 +100,7 @@ export const standorte: Standort[] = [
       "Größter Einzelstandort des Konzepts. Carport-Anlage am Bahnhof-Parkplatz mit hohem Eigennutzungspotenzial durch die geplanten Ladestationen direkt am Standort.",
     bildPlatzhalter: "Parkplatz Bahnhof – Carport-PV",
     bildSrc: "/images/standorte/parkplatz-bahnhof.webp",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Bahnhof_Carport.pdf",
   },
   {
     slug: "mittelschule",
@@ -113,6 +116,7 @@ export const standorte: Standort[] = [
       "Aufdach-Anlage auf dem Eternitdach der Mittelschule inklusive Batteriespeicher und Notstromsystem. Die Schule wird damit blackoutfähig — kritischer Standort als möglicher Notunterstands-Punkt für die Gemeinde.",
     bildPlatzhalter: "Mittelschule – Aufdach-Anlage",
     bildSrc: "/images/standorte/mittelschule.webp",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Mittelschule_Aufdach.pdf",
   },
   {
     slug: "sportplatz",
@@ -127,6 +131,7 @@ export const standorte: Standort[] = [
       "Flachdach-Anlage auf der Sportplatz-Tribüne mit Batteriespeicher zur Lastverschiebung in die Abendstunden (Flutlichtbetrieb). Ergänzt um einen 22-kW-Ladepunkt.",
     bildPlatzhalter: "Sportplatz – Flachdach-PV",
     bildSrc: "/images/standorte/sportplatz.webp",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Sportplatz.pdf",
   },
 
   // ── PHASE 2 — mittelfristig ────────────────────────────────────────────
@@ -141,6 +146,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Carport-Anlage am Raiffeisen-Parkplatz mit Schnelllade-Infrastruktur (100 kW) und einem zusätzlichen 22-kW-Ladepunkt — hohe Sichtbarkeit und starkes Eigennutzungspotenzial.",
     bildPlatzhalter: "Raiffeisen Parkplatz – Carport-PV",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Raiffeisen_Parkplatz_Carport.pdf",
   },
   {
     slug: "kindergarten-aufeld",
@@ -155,6 +161,7 @@ export const standorte: Standort[] = [
       "PV-Anlage auf dem Blechfalzdach des Kindergartens Aufeld inklusive Batteriespeicher für eine hohe Eigenversorgung über den Tag.",
     bildPlatzhalter: "Kindergarten Aufeld – Aufdach",
     bildSrc: "/images/standorte/kindergarten-aufeld.webp",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Kindergarten.pdf",
   },
   {
     slug: "bauhof",
@@ -168,6 +175,7 @@ export const standorte: Standort[] = [
     beschreibung:
       "Flachdach-Anlage (Kiesdach) auf dem Bauhof mit Batteriespeicher — deckt den Eigenbedarf der gemeindeeigenen Fahrzeuge und Geräte.",
     bildPlatzhalter: "Bauhof – Flachdach-PV",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Bauhof.pdf",
   },
   {
     slug: "polizei",
@@ -197,6 +205,7 @@ export const standorte: Standort[] = [
       "Gebäudeintegriertes Indachsystem mit 330-W-Modulen — die Module ersetzen Teile der Dacheindeckung und fügen sich optisch in das Gebäudebild ein.",
     bildPlatzhalter: "Posthaus – Indachsystem",
     bildSrc: "/images/standorte/posthaus.webp",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Posthaus.pdf",
   },
   {
     slug: "volksschule",
