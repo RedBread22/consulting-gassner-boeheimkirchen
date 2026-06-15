@@ -185,7 +185,7 @@ export function Standorte() {
   return (
     <SectionWrapper id="standorte">
       <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-4">
-        Standorte für eine unabhängige Gemeinde
+        Die Timeline für eine unabhängige Gemeinde
       </h2>
       <p className="text-fg-muted text-lg mb-16 max-w-2xl">
         Das Konzept wird in drei Phasen umgesetzt — von der sofortigen Umsetzung
