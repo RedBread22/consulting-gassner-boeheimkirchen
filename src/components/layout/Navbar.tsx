@@ -1,20 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const links = [
-  { label: "Gemeinde", href: "#gemeinde" },
-  { label: "Ist-Zustand", href: "#aktueller-stand" },
-  { label: "Konzept", href: "#konzept" },
-  { label: "Standorte", href: "#standorte" },
-  { label: "Ergebnis", href: "#ergebnis" },
-  { label: "Ladestationen", href: "#ladestationen" },
-  { label: "Kontakt", href: "#kontakt" },
+  { label: "Gemeinde", anchor: "gemeinde" },
+  { label: "Ist-Zustand", anchor: "aktueller-stand" },
+  { label: "Konzept", anchor: "konzept" },
+  { label: "Standorte", anchor: "standorte" },
+  { label: "Ergebnis", anchor: "ergebnis" },
+  { label: "Ladestationen", anchor: "ladestationen" },
+  { label: "Kontakt", anchor: "kontakt" },
 ];
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  // Auf der Startseite lokal scrollen (#anchor), auf Detailseiten zur
+  // Startseite + Anchor navigieren (/#anchor).
+  const hrefFor = (anchor: string) => (isHome ? `#${anchor}` : `/#${anchor}`);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-bg/90 backdrop-blur-md border-b border-border">
@@ -26,8 +33,8 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           {links.map((l) => (
             <a
-              key={l.href}
-              href={l.href}
+              key={l.anchor}
+              href={hrefFor(l.anchor)}
               className="text-sm text-fg-muted hover:text-fg transition-colors"
             >
               {l.label}
@@ -49,8 +56,8 @@ export function Navbar() {
           <div className="px-6 py-4 flex flex-col gap-4">
             {links.map((l) => (
               <a
-                key={l.href}
-                href={l.href}
+                key={l.anchor}
+                href={hrefFor(l.anchor)}
                 onClick={() => setOpen(false)}
                 className="text-sm text-fg-muted hover:text-fg transition-colors"
               >
