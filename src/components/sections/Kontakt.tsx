@@ -12,10 +12,10 @@ export function Kontakt() {
         <div className="mb-8">
           <Image
             src={kontakt.logoSrc}
-            alt="Consulting Gassner"
-            width={240}
-            height={72}
-            className="h-16 w-auto mx-auto"
+            alt="Consulting Gassner & MHZ Beratung"
+            width={640}
+            height={240}
+            className="h-20 w-auto max-w-full mx-auto"
           />
         </div>
 
@@ -34,6 +34,10 @@ export function Kontakt() {
             </h3>
             <p className="text-sm uppercase tracking-[0.2em] text-fg-muted mt-1">
               {kontakt.unternehmen}
+            </p>
+
+            <p className="text-sm text-fg-muted leading-relaxed mt-4">
+              {kontakt.beschreibung}
             </p>
 
             <div className="flex flex-col gap-3 mt-6 text-fg-muted">
