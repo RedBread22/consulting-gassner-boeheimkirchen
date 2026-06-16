@@ -146,7 +146,7 @@ function Finanzierung() {
       </div>
       <p className="text-xs text-fg-muted mb-10 -mt-6">
         Eckdaten aus der Wirtschaftlichkeitsberechnung (Phase 1 · 328,5 kWp) ·
-        Consulting Gassner · Stand {finanzierung.stand}
+        Consulting Gassner
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
