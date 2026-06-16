@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   RefreshCw,
   Receipt,
@@ -11,10 +11,12 @@ import {
   Wallet,
   Landmark,
   Network,
-  Play,
   ArrowRight,
+  ChevronDown,
   Globe,
   FileText,
+  Leaf,
+  Sparkles,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -48,34 +50,45 @@ function formatCt(n: number): string {
   });
 }
 
-/* ── Karten-Hülle ───────────────────────────────────────────────────────── */
+/* ── Karten-Hülle (klappbar, Verhalten wie die Timeline-Phasen) ──────────── */
 
 function BenefitCard({
   index,
   kicker,
   titel,
   Icon,
+  offenDefault = false,
   children,
 }: {
   index: number;
   kicker: string;
   titel: string;
   Icon: LucideIcon;
+  offenDefault?: boolean;
   children: React.ReactNode;
 }) {
+  const [offen, setOffen] = useState(offenDefault);
+  const inhaltId = `benefit-${index}-inhalt`;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5 }}
-      className="rounded-2xl border border-border bg-bg p-6 md:p-10"
+      className="rounded-2xl border border-border bg-bg overflow-hidden"
     >
-      <div className="flex items-start gap-4 mb-8">
+      <button
+        type="button"
+        onClick={() => setOffen((o) => !o)}
+        aria-expanded={offen}
+        aria-controls={inhaltId}
+        className="group w-full text-left flex items-start gap-4 p-6 md:p-10"
+      >
         <div className="flex-shrink-0 w-11 h-11 rounded-sm border border-border flex items-center justify-center">
           <Icon className="w-5 h-5 text-fg-muted" strokeWidth={1.5} />
         </div>
-        <div>
+        <div className="flex-1">
           <p className="text-xs uppercase tracking-[0.18em] text-fg-muted">
             Benefit {index} · {kicker}
           </p>
@@ -83,8 +96,28 @@ function BenefitCard({
             {titel}
           </h3>
         </div>
-      </div>
-      {children}
+        <ChevronDown
+          className={`w-6 h-6 mt-1 shrink-0 text-fg-muted transition-transform duration-300 ${
+            offen ? "rotate-180" : ""
+          }`}
+          strokeWidth={1.5}
+        />
+      </button>
+
+      <AnimatePresence initial={false}>
+        {offen && (
+          <motion.div
+            id={inhaltId}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="px-6 md:px-10 pb-6 md:pb-10">{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
@@ -121,7 +154,13 @@ function Finanzierung() {
   ];
 
   return (
-    <BenefitCard index={1} kicker="Finanzierung" titel="Kapazitätsleasing" Icon={Wallet}>
+    <BenefitCard
+      index={1}
+      kicker="Finanzierung"
+      titel="Kapazitätsleasing"
+      Icon={Wallet}
+      offenDefault
+    >
       <p className="text-base md:text-lg leading-relaxed text-fg-muted mb-8 max-w-3xl">
         Die PV-Anlage wird nicht klassisch gekauft, sondern über den
         tatsächlichen Ertrag finanziert. Die Leasingrate richtet sich nach der
@@ -179,6 +218,33 @@ function Finanzierung() {
           />
         </div>
       </div>
+
+      {/* store and more — Konzept als PDF, eingebettet/scrollbar wie bei den
+          Standort-PDFs, plus Link zum Öffnen in neuem Tab. */}
+      {finanzierung.pdf && (
+        <div className="mt-12">
+          <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-4">
+            store and more — Konzept (PDF)
+          </p>
+          <div className="w-full h-[70vh] min-h-[420px] border border-border bg-bg-soft overflow-hidden rounded-xl">
+            <iframe
+              src={finanzierung.pdf}
+              title="store and more — Konzept Böheimkirchen"
+              className="w-full h-full"
+            />
+          </div>
+          <p className="text-sm text-fg-muted mt-3">
+            <a
+              href={finanzierung.pdf}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-fg transition-colors"
+            >
+              PDF in neuem Tab öffnen
+            </a>
+          </p>
+        </div>
+      )}
     </BenefitCard>
   );
 }
@@ -453,53 +519,47 @@ function PartnerKarte({
   );
 }
 
-function Digitalisierung() {
-  // Geöffneter Partner + ob direkt zur eingebetteten PDF gescrollt werden soll
-  const [aktiv, setAktiv] = useState<{
-    p: Partner;
-    scrollToPdf: boolean;
-  } | null>(null);
+// Partner nach Schlüssel holen — die drei Steckbriefe leben jetzt einzeln in
+// eigenen Benefits statt in einem 3-Karten-Grid.
+function partnerByKey(key: string): Partner {
+  const p = partner.find((x) => x.key === key);
+  if (!p) throw new Error(`Partner "${key}" nicht gefunden`);
+  return p;
+}
+
+// Einzelner Partner-Steckbrief inkl. eigenem Modal (Website-Link, „PDF ansehen“,
+// „Mehr erfahren“). Hält seinen Öffnungszustand selbst.
+function PartnerSteckbrief({ p }: { p: Partner }) {
+  const [aktiv, setAktiv] = useState<{ scrollToPdf: boolean } | null>(null);
 
   return (
-    <BenefitCard
-      index={2}
-      kicker="Digitalisierung"
-      titel="Ein starkes Partnernetzwerk"
-      Icon={Network}
-    >
-      <p className="text-base md:text-lg leading-relaxed text-fg-muted mb-8 max-w-3xl">
-        Über die Anlage hinaus begleitet ein Netzwerk spezialisierter Partner die
-        Gemeinde — von der Energieberatung über KI-Kompetenz bis zu Web- und
-        IT-Dienstleistungen.
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {partner.map((p) => (
-          <PartnerKarte
-            key={p.key}
-            p={p}
-            onOpen={(scrollToPdf) => setAktiv({ p, scrollToPdf })}
-          />
-        ))}
-      </div>
-
+    <div className="max-w-2xl">
+      <PartnerKarte p={p} onOpen={(scrollToPdf) => setAktiv({ scrollToPdf })} />
       {aktiv && (
         <PartnerModal
-          p={aktiv.p}
+          p={p}
           scrollToPdf={aktiv.scrollToPdf}
           onClose={() => setAktiv(null)}
         />
       )}
-    </BenefitCard>
+    </div>
   );
 }
 
-/* ── Benefit 3 — Video ──────────────────────────────────────────────────── */
-
-function VideoBenefit() {
+// Monitoring-Video — lebt jetzt im Benefit „Digitalisierung & Monitoring“.
+// Wird erst gerendert, wenn der Benefit geöffnet ist (Eltern-AnimatePresence),
+// daher zieht es beim Laden der Seite keine Bandbreite. Einstellungen wie
+// gehabt: autoPlay/loop/muted/playsInline, keine Controls.
+function MonitoringVideo() {
   return (
-    <BenefitCard index={3} kicker="Video" titel={video.titel} Icon={Play}>
-      <p className="text-base md:text-lg leading-relaxed text-fg-muted mb-8 max-w-3xl">
+    <div className="mt-10 pt-10 border-t border-border">
+      <p className="text-xs uppercase tracking-[0.18em] text-fg-muted">
+        Monitoring
+      </p>
+      <h4 className="font-serif text-xl md:text-2xl tracking-tight mt-1 mb-4">
+        {video.titel}
+      </h4>
+      <p className="text-base leading-relaxed text-fg-muted mb-8 max-w-3xl">
         {video.beschreibung}
       </p>
 
@@ -524,6 +584,69 @@ function VideoBenefit() {
           Ihr Browser unterstützt das Video-Element nicht.
         </video>
       </div>
+    </div>
+  );
+}
+
+/* ── Benefit 2 — Digitalisierung & Monitoring ───────────────────────────── */
+
+function DigitalisierungMonitoring() {
+  return (
+    <BenefitCard
+      index={2}
+      kicker="Digitalisierung & Monitoring"
+      titel="Digitalisierung & Monitoring"
+      Icon={Network}
+    >
+      <p className="text-base md:text-lg leading-relaxed text-fg-muted mb-8 max-w-3xl">
+        Moderne Web- und IT-Dienstleistungen sowie KI-Automatisierungen — und ein
+        laufendes Monitoring, das den Betrieb der Anlage jederzeit transparent
+        macht.
+      </p>
+
+      <PartnerSteckbrief p={partnerByKey("netnomic")} />
+
+      <MonitoringVideo />
+    </BenefitCard>
+  );
+}
+
+/* ── Benefit 3 — Energieberatung ────────────────────────────────────────── */
+
+function Energieberatung() {
+  return (
+    <BenefitCard
+      index={3}
+      kicker="Energieberatung"
+      titel="Beratung für erneuerbare Energien"
+      Icon={Leaf}
+    >
+      <p className="text-base md:text-lg leading-relaxed text-fg-muted mb-8 max-w-3xl">
+        Spezialisierte Beratung für Photovoltaik, Energiegemeinschaften und
+        Förderungen begleitet die Gemeinde von der Planung bis zur Abwicklung.
+      </p>
+
+      <PartnerSteckbrief p={partnerByKey("connesso")} />
+    </BenefitCard>
+  );
+}
+
+/* ── Benefit 4 — The Human Touch in the Age of AI ───────────────────────── */
+
+function HumanTouch() {
+  return (
+    <BenefitCard
+      index={4}
+      kicker="The Human Touch in the Age of AI"
+      titel="KI-Kompetenz, menschenzentriert"
+      Icon={Sparkles}
+    >
+      <p className="text-base md:text-lg leading-relaxed text-fg-muted mb-8 max-w-3xl">
+        KI-Enablement, Coaching und Trainings bauen Kompetenz, Resilienz und
+        Mindset auf, um KI wirksam und menschenzentriert einzusetzen.
+      </p>
+
+      <PartnerSteckbrief p={partnerByKey("vantatsch")} />
     </BenefitCard>
   );
 }
@@ -534,18 +657,20 @@ export function Benefits() {
   return (
     <SectionWrapper id="benefits">
       <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-4">
-        Drei Benefits für die Gemeinde
+        Vier Benefits für die Gemeinde
       </h2>
       <p className="text-fg-muted text-lg mb-16 max-w-2xl">
         Das Konzept bringt mehr als günstigen Strom: eine ertragsabhängige
-        Finanzierung, ein digitales Partnernetzwerk und volle Transparenz über
-        den Betrieb der Anlage.
+        Finanzierung, Digitalisierung mit laufendem Monitoring, eine fundierte
+        Energieberatung und KI-Kompetenz für die Gemeinde. Klicken Sie auf einen
+        Benefit, um ihn ein- oder auszuklappen.
       </p>
 
       <div className="space-y-6 md:space-y-8">
         <Finanzierung />
-        <Digitalisierung />
-        <VideoBenefit />
+        <DigitalisierungMonitoring />
+        <Energieberatung />
+        <HumanTouch />
       </div>
     </SectionWrapper>
   );
