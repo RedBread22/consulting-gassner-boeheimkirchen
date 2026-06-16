@@ -43,8 +43,8 @@ function formatNumber(n: number): string {
 
 function formatCt(n: number): string {
   return n.toLocaleString("de-AT", {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
 }
 
@@ -102,7 +102,7 @@ function Finanzierung() {
       value: `${finanzierung.laufzeit_jahre.toLocaleString("de-AT")} Jahre`,
     },
     {
-      label: "Anschaffungswert (netto)",
+      label: "Investition gesamt",
       value: `${formatNumber(finanzierung.anschaffungswertNetto_eur)} €`,
     },
     {
@@ -110,6 +110,13 @@ function Finanzierung() {
       value: `${formatNumber(finanzierung.pvLeistung_kWp)} kWp · ${formatNumber(
         finanzierung.speicher_kWh,
       )} kWh`,
+    },
+    {
+      label: "Mögliche Förderung",
+      value: `${finanzierung.moeglicheFoerderung_eur.toLocaleString("de-AT", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })} €`,
     },
   ];
 
@@ -124,7 +131,7 @@ function Finanzierung() {
         </span>
       </p>
 
-      {/* Kennzahlen-Block aus dem Richtangebot */}
+      {/* Kennzahlen-Block aus der Wirtschaftlichkeitsberechnung (Phase 1) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border rounded-xl overflow-hidden mb-10">
         {kennzahlen.map((k) => (
           <div key={k.label} className="bg-bg p-5">
@@ -138,8 +145,8 @@ function Finanzierung() {
         ))}
       </div>
       <p className="text-xs text-fg-muted mb-10 -mt-6">
-        Eckdaten aus dem Richtangebot · Consulting Gassner · Stand{" "}
-        {finanzierung.stand}
+        Eckdaten aus der Wirtschaftlichkeitsberechnung (Phase 1 · 328,5 kWp) ·
+        Consulting Gassner · Stand {finanzierung.stand}
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
