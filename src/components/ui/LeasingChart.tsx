@@ -32,6 +32,18 @@ function formatEur(n: number): string {
   });
 }
 
+// Kompakte Tausender-Schreibweise für die rechte €-Achse, passend zur
+// linken kWh-Achse ("15k"). Beispiele: 10000 -> "10k", 2500 -> "2,5k".
+function formatEurCompact(n: number): string {
+  if (n === 0) return "0";
+  const k = n / 1000;
+  const str = k.toLocaleString("de-AT", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 1,
+  });
+  return `${str}k`;
+}
+
 export function LeasingChart({ daten, preisProKwh_ct }: Props) {
   const fixpreis = preisProKwh_ct / 100;
   const data = daten.map((m) => ({
@@ -45,7 +57,7 @@ export function LeasingChart({ daten, preisProKwh_ct }: Props) {
       <ResponsiveContainer width="100%" height={260}>
         <ComposedChart
           data={data}
-          margin={{ top: 8, right: 8, bottom: 0, left: 8 }}
+          margin={{ top: 8, right: 28, bottom: 0, left: 8 }}
         >
           <CartesianGrid stroke="#E5E5E5" vertical={false} />
           <XAxis
@@ -68,8 +80,8 @@ export function LeasingChart({ daten, preisProKwh_ct }: Props) {
             tick={{ fill: "#6B6B6B", fontSize: 11 }}
             tickLine={false}
             axisLine={false}
-            width={48}
-            tickFormatter={(v: number) => `${formatEur(v)} €`}
+            width={56}
+            tickFormatter={(v: number) => `${formatEurCompact(v)} €`}
           />
           <Tooltip
             cursor={{ fill: "rgba(0,0,0,0.04)" }}
