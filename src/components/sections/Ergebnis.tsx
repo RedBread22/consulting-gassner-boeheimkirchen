@@ -30,14 +30,23 @@ export function Ergebnis() {
 
   return (
     <SectionWrapper id="ergebnis" soft>
-      <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-16">
+      <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-6">
         Das Ergebnis: vom Verbraucher zum Selbstversorger
       </h2>
 
-      {/* Direkter Vergleich Ist-Zustand ↔ Vollausbau */}
+      <p className="text-base md:text-lg text-fg-muted leading-relaxed max-w-2xl mb-16">
+        Die folgenden Zahlen beziehen sich auf{" "}
+        <span className="text-fg font-medium">
+          Phase 1 — den sofort umsetzbaren Ausbauschritt mit{" "}
+          {formatKwp(ergebnis.pvNachher.leistung_kWp)} kWp
+        </span>{" "}
+        — und nicht auf einen späteren Vollausbau.
+      </p>
+
+      {/* Direkter Vergleich Ist-Zustand ↔ Phase 1 */}
       <div className="mb-20">
         <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-6">
-          Heute vs. nach Umsetzung
+          Heute vs. nach Phase 1
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
@@ -72,7 +81,7 @@ export function Ergebnis() {
           {/* NACHHER */}
           <div className="rounded-2xl bg-fg text-bg p-6 md:p-8">
             <p className="text-xs uppercase tracking-[0.15em] text-bg/60 mb-6">
-              Nach Vollausbau
+              Nach Phase 1
             </p>
             <dl className="space-y-5">
               <div>
@@ -117,7 +126,7 @@ export function Ergebnis() {
           </div>
           <div>
             <div className="flex justify-between text-sm mb-2">
-              <span className="font-medium">PV-Leistung nach Vollausbau</span>
+              <span className="font-medium">PV-Leistung nach Phase 1</span>
               <span className="tabular-nums font-medium">{formatKwp(pvNachher)} kWp</span>
             </div>
             <div className="h-3 rounded-full bg-border overflow-hidden">
@@ -145,11 +154,23 @@ export function Ergebnis() {
 
       <div className="mb-20 text-center">
         <p className="font-serif text-7xl md:text-8xl tracking-tight text-fg">
-          {formatNumber(wirtschaftlichkeit.gesamteinsparung_30Jahre_eur)}
+          {formatNumber(wirtschaftlichkeit.gesamteinsparung_30Jahre_netto_eur)}
           <span className="text-4xl md:text-5xl ml-2">€</span>
         </p>
         <p className="mt-2 text-xs uppercase tracking-[0.15em] text-fg-muted font-sans">
-          Gesamteinsparung auf 30 Jahre (€)
+          Gesamteinsparung auf 30 Jahre · netto (€)
+        </p>
+        <p className="mt-5 mx-auto max-w-xl text-sm text-fg-muted leading-relaxed">
+          Brutto{" "}
+          {formatEur(wirtschaftlichkeit.gesamteinsparung_30Jahre_brutto_eur)} €
+          abzüglich Zusatzkosten über 30 Jahre{" "}
+          {formatNumber(wirtschaftlichkeit.zusatzkosten_30Jahre_eur)} € (
+          {wirtschaftlichkeit.zusatzkostenAufschluesselung
+            .map((z) => `${z.label} ${formatNumber(z.betrag_eur)} €`)
+            .join(" · ")}
+          ) ={" "}
+          {formatEur(wirtschaftlichkeit.gesamteinsparung_30Jahre_netto_eur)} €
+          netto.
         </p>
       </div>
 
@@ -165,9 +186,29 @@ export function Ergebnis() {
         <table className="w-full text-left">
           <tbody className="divide-y divide-border">
             <tr>
-              <td className="py-4 text-fg-muted">Investitionskosten</td>
+              <td className="py-4 text-fg-muted">Investition gesamt</td>
               <td className="py-4 text-right font-serif text-lg">
                 {formatEur(wirtschaftlichkeit.investitionskosten_eur)} €
+              </td>
+            </tr>
+            <tr>
+              <td className="py-4 text-fg-muted">Mögliche Förderung</td>
+              <td className="py-4 text-right font-serif text-lg">
+                {formatEur(wirtschaftlichkeit.moeglicheFoerderung_eur)} €
+              </td>
+            </tr>
+            <tr>
+              <td className="py-4 text-fg-muted">Finanzierung</td>
+              <td className="py-4 text-right font-serif text-lg">
+                {wirtschaftlichkeit.finanzierung_ct_kWh.toLocaleString("de-AT", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{" "}
+                ct/kWh
+                <span className="block text-sm text-fg-muted font-sans">
+                  {formatEur(wirtschaftlichkeit.finanzierungskostenProJahr_eur)} €
+                  / Jahr
+                </span>
               </td>
             </tr>
             <tr>

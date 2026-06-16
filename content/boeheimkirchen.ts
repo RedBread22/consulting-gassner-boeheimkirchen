@@ -301,34 +301,44 @@ export const phasen = [
   },
 ] as const;
 
+// Quelle der Wahrheit: aktualisierte Wirtschaftlichkeits-Excel (Christoph).
+// Alle Werte beziehen sich auf Phase 1 = 328,5 kWp (sofort umsetzbar),
+// NICHT auf einen Vollausbau.
 export const ergebnis = {
-  gesamtLeistung_kWp: 386.82,
-  gesamtSpeicher_kWh: 216,
+  gesamtLeistung_kWp: 328.5,
+  gesamtSpeicher_kWh: 108,
   pvNachher: {
-    leistung_kWp: 533.10,
-    leistung_kWh: 526244.68,
-    sonnenstunden: 987.1,
-    nutzenDirekt_kWh: 417938.05,
-    ueberschussOemag_kWh: 68980.76,
+    leistung_kWp: 328.5,
+    leistung_kWh: 344925,
+    sonnenstunden: 1050,
+    // ACHTUNG — Platzhalter: Die Eigennutzen-Quote lässt sich aus den neuen
+    // 328,5-kWp-Daten nicht sauber ableiten. Der korrekte Wert wird von
+    // Christoph nachgeliefert; bis dahin steht hier bewusst der alte Wert.
+    // Hier (und nur hier) anpassen, sobald der Wert vorliegt — NICHT schätzen.
     eigennutzen_prozent: 86,
     ueberschuss_prozent: 14,
   },
 } as const;
 
 export const wirtschaftlichkeit = {
-  investitionskosten_eur: 871871.45,
-  finanzierung_ct_kWh: 15,
-  stromverbrauch_neu_kWh: 200521.89,
-  stromkosten_neu_eur: 38261.48,
-  verguetungUeberschuss_eur: 4483.75,
-  finanzierungskosten_eur: 59709.35,
-  tatsaechlicheKosten_neu_eur: 93486.09,
-  einsparungProJahr_finanzierung_eur: 6802.78,
+  investitionskosten_eur: 776000,
+  moeglicheFoerderung_eur: 219634.5,
+  finanzierung_ct_kWh: 16.05,
+  finanzierungskostenProJahr_eur: 55360.46,
   finanzierungsdauer_jahre: 13.8,
-  einsparungProJahr_nachFinanzierung_eur: 66511.13,
-  zeitNachFinanzierung_jahre: 16.2,
-  gesamteinsparung_30Jahre_eur: 1171358.73,
-  mindestfoerderung_eur: 267434.13,
+  einsparungProJahr_finanzierung_eur: 19114.52,
+  einsparungProJahr_nachFinanzierung_eur: 74474.98,
+  // Headline = Netto (nach Abzug der Zusatzkosten über 30 Jahre) — ehrlicher
+  // als der Brutto-Wert. Brutto und Zusatzkosten werden sekundär ausgewiesen.
+  gesamteinsparung_30Jahre_netto_eur: 1252811.15,
+  gesamteinsparung_30Jahre_brutto_eur: 1475811.15,
+  zusatzkosten_30Jahre_eur: 223000,
+  zusatzkostenAufschluesselung: [
+    { label: "Wartung", betrag_eur: 75000 },
+    { label: "Komponententausch Jahr 10", betrag_eur: 50000 },
+    { label: "Komponententausch Jahr 20", betrag_eur: 50000 },
+    { label: "5-jährige Generalwartung", betrag_eur: 48000 },
+  ],
 } as const;
 
 // ── Benefits ──────────────────────────────────────────────────────────────
@@ -336,14 +346,16 @@ export const wirtschaftlichkeit = {
 // Digitalisierung (Partnernetzwerk) und eine Video-Visualisierung der Anlage.
 
 // BENEFIT 1 — Finanzierung über Kapazitätsleasing.
-// Eckdaten aus dem Richtangebot (Consulting Gassner, Stand 01.04.2026).
+// Eckdaten aus der aktualisierten Wirtschaftlichkeitsberechnung (Consulting
+// Gassner) — Phase 1 = 328,5 kWp, sofort umsetzbar.
 export const finanzierung = {
   stand: "01.04.2026",
-  preisProKwh_ct: 15.0,
+  preisProKwh_ct: 16.05,
   laufzeit_jahre: 13.8,
-  anschaffungswertNetto_eur: 871871,
-  pvLeistung_kWp: 386,
-  speicher_kWh: 216,
+  anschaffungswertNetto_eur: 776000,
+  moeglicheFoerderung_eur: 219634.5,
+  pvLeistung_kWp: 328.5,
+  speicher_kWh: 108,
   vorteile: [
     {
       icon: "RefreshCw",
