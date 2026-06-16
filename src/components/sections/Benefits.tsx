@@ -17,6 +17,8 @@ import {
   FileText,
   Leaf,
   Sparkles,
+  Users,
+  Check,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -403,6 +405,22 @@ function PartnerModal({
             {p.beschreibung}
           </p>
 
+          {p.stichpunkte && p.stichpunkte.length > 0 && (
+            <ul className="mt-5 space-y-2.5">
+              {p.stichpunkte.map((s) => (
+                <li key={s} className="flex gap-2.5">
+                  <Check
+                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent"
+                    strokeWidth={2}
+                  />
+                  <span className="text-sm leading-relaxed text-fg-muted">
+                    {s}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
             <a
               href={p.url}
@@ -482,6 +500,20 @@ function PartnerKarte({
       <p className="mt-3 flex-1 text-base leading-relaxed text-fg-muted">
         {p.beschreibung}
       </p>
+
+      {p.stichpunkte && p.stichpunkte.length > 0 && (
+        <ul className="mt-5 space-y-2.5">
+          {p.stichpunkte.map((s) => (
+            <li key={s} className="flex gap-2.5">
+              <Check
+                className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent"
+                strokeWidth={2}
+              />
+              <span className="text-sm leading-relaxed text-fg-muted">{s}</span>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
         <a
@@ -631,12 +663,33 @@ function Energieberatung() {
   );
 }
 
-/* ── Benefit 4 — The Human Touch in the Age of AI ───────────────────────── */
+/* ── Benefit 4 — Energiegemeinschaft ────────────────────────────────────── */
+
+function Energiegemeinschaft() {
+  return (
+    <BenefitCard
+      index={4}
+      kicker="Energiegemeinschaft"
+      titel="Energiegemeinschaft"
+      Icon={Users}
+    >
+      <p className="text-base md:text-lg leading-relaxed text-fg-muted mb-8 max-w-3xl">
+        Über eine Energiegemeinschaft teilen die Gemeindestandorte ihren
+        PV-Strom — die Plattform von connesso bündelt Errichtung, Abrechnung und
+        Verwaltung in einer Anwendung.
+      </p>
+
+      <PartnerSteckbrief p={partnerByKey("connesso-community")} />
+    </BenefitCard>
+  );
+}
+
+/* ── Benefit 5 — The Human Touch in the Age of AI ───────────────────────── */
 
 function HumanTouch() {
   return (
     <BenefitCard
-      index={4}
+      index={5}
       kicker="The Human Touch in the Age of AI"
       titel="KI-Kompetenz, menschenzentriert"
       Icon={Sparkles}
@@ -657,19 +710,21 @@ export function Benefits() {
   return (
     <SectionWrapper id="benefits">
       <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-4">
-        Vier Benefits für die Gemeinde
+        Die Benefits für die Gemeinde
       </h2>
       <p className="text-fg-muted text-lg mb-16 max-w-2xl">
         Das Konzept bringt mehr als günstigen Strom: eine ertragsabhängige
         Finanzierung, Digitalisierung mit laufendem Monitoring, eine fundierte
-        Energieberatung und KI-Kompetenz für die Gemeinde. Klicken Sie auf einen
-        Benefit, um ihn ein- oder auszuklappen.
+        Energieberatung, eine gemeinsam nutzbare Energiegemeinschaft und
+        KI-Kompetenz für die Gemeinde. Klicken Sie auf einen Benefit, um ihn ein-
+        oder auszuklappen.
       </p>
 
       <div className="space-y-6 md:space-y-8">
         <Finanzierung />
         <DigitalisierungMonitoring />
         <Energieberatung />
+        <Energiegemeinschaft />
         <HumanTouch />
       </div>
     </SectionWrapper>

@@ -342,9 +342,10 @@ export const wirtschaftlichkeit = {
 } as const;
 
 // ── Benefits ──────────────────────────────────────────────────────────────
-// Vier eigenständige Mehrwerte des Konzepts: Finanzierung (Kapazitätsleasing),
+// Eigenständige Mehrwerte des Konzepts: Finanzierung (Kapazitätsleasing),
 // Digitalisierung & Monitoring (NetNomic + Video-Visualisierung der Anlage),
-// Energieberatung (connesso) und The Human Touch in the Age of AI (Van Tatsch).
+// Energieberatung (connesso), Energiegemeinschaft (connesso communities) und
+// The Human Touch in the Age of AI (Van Tatsch).
 
 // BENEFIT 1 — Finanzierung über Kapazitätsleasing.
 // Eckdaten aus der aktualisierten Wirtschaftlichkeitsberechnung (Consulting
@@ -413,6 +414,7 @@ export const partner: {
   url: string;
   logoSrc: string;
   pdf?: string;
+  stichpunkte?: string[];
 }[] = [
   {
     key: "connesso",
@@ -422,6 +424,24 @@ export const partner: {
       "Beratung für Photovoltaik, Wind- und Wasserkraft sowie Biogas und Biomasse. connesso begleitet Energiegemeinschaften bei Gründung und Abwicklung und ist Spezialist für Förderungen (z. B. Erneuerbaren-Ausbau-Gesetz). „connesso“ ist italienisch für „verbunden“.",
     url: "https://www.connesso.at/",
     logoSrc: "/images/partners/connesso.png",
+  },
+  {
+    // SEPARATER Eintrag — eigenes Logo (connesso-community.png), nicht das
+    // connesso-Logo aus Benefit 3 (Energieberatung).
+    key: "connesso-community",
+    name: "connesso communities",
+    tagline: "Software für Energiegemeinschaften",
+    beschreibung:
+      "Die Software-Lösung von connesso macht die gemeinsame Energienutzung einfach: Errichten, Abrechnen und Verwalten der Energiegemeinschaft in einer Anwendung. So behält die Gemeinde jederzeit den Überblick über Erzeugung, Verbrauch und Abrechnung — bei voller Transparenz.",
+    url: "https://communities.connesso.at/",
+    logoSrc: "/images/partners/connesso-community.png",
+    stichpunkte: [
+      "Überblick über Erzeugungs- und Verbrauchsmengen in Echtzeit",
+      "Effiziente Verwaltung der Kundendaten für die Verrechnung",
+      "Nachvollziehbarer Status der Abrechnungsdaten",
+      "Übersichtlicher Status der Anmeldeprozesse neuer Teilnehmer",
+      "Optional: Buchhaltung & steuerliche Betreuung sowie Abrechnungs-Service",
+    ],
   },
   {
     key: "vantatsch",
