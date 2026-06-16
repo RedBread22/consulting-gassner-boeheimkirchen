@@ -462,7 +462,7 @@ export const kontakt = {
   adresse: "Rödschitz 105, 8983 Bad Mitterndorf",
   land: "Austria",
   telefon: "+43 664 5325555",
-  email: "info@consulting-gassner.at",
+  email: "office@consulting-gassner.at",
   website: "www.consulting-gassner.at",
   terminBuchenUrl: "https://www.consulting-gassner.at/blank-4",
   logoSrc: "/images/logos/Gassner-Hoelzl.jpeg",
