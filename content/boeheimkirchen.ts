@@ -290,13 +290,13 @@ export const phasen = [
   {
     nummer: 2 as Phase,
     titel: "Phase 2 — Mittelfristig",
-    zeitrahmen: "Beschluss im Herbst · Umsetzung Q1–Q3 2027",
+    zeitrahmen: "Betrachtung im Herbst · Umsetzung Q1–Q3 2027",
     summe: { module: 353, leistung_kWp: 158.85, speicher_kWh: 96 },
   },
   {
     nummer: 3 as Phase,
     titel: "Phase 3 — Langfristig",
-    zeitrahmen: "Beschluss Q3/Q4 2027 · Umsetzung 2028",
+    zeitrahmen: "Betrachtung während mittelfristig",
     summe: null,
   },
 ] as const;
@@ -342,8 +342,9 @@ export const wirtschaftlichkeit = {
 } as const;
 
 // ── Benefits ──────────────────────────────────────────────────────────────
-// Drei gleichwertige Mehrwerte des Konzepts: Finanzierung (Kapazitätsleasing),
-// Digitalisierung (Partnernetzwerk) und eine Video-Visualisierung der Anlage.
+// Vier eigenständige Mehrwerte des Konzepts: Finanzierung (Kapazitätsleasing),
+// Digitalisierung & Monitoring (NetNomic + Video-Visualisierung der Anlage),
+// Energieberatung (connesso) und The Human Touch in the Age of AI (Van Tatsch).
 
 // BENEFIT 1 — Finanzierung über Kapazitätsleasing.
 // Eckdaten aus der aktualisierten Wirtschaftlichkeitsberechnung (Consulting
@@ -356,6 +357,8 @@ export const finanzierung = {
   moeglicheFoerderung_eur: 219634.5,
   pvLeistung_kWp: 328.5,
   speicher_kWh: 108,
+  // store and more — Konzept als PDF (eingebettet, scrollbar/verlinkt).
+  pdf: "/pdf/store-and-more-boeheimkirchen.pdf",
   vorteile: [
     {
       icon: "RefreshCw",

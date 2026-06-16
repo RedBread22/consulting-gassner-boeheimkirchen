@@ -9,16 +9,6 @@ export function Kontakt() {
   return (
     <SectionWrapper id="kontakt" soft>
       <div className="max-w-3xl mx-auto text-center">
-        <div className="mb-8">
-          <Image
-            src={kontakt.logoSrc}
-            alt="Consulting Gassner & MHZ Beratung"
-            width={640}
-            height={240}
-            className="w-[85%] max-w-[280px] md:max-w-[360px] h-auto mx-auto"
-          />
-        </div>
-
         <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-4">
           Nächste Schritte
         </h2>
@@ -26,12 +16,25 @@ export function Kontakt() {
           Lassen Sie uns gemeinsam die Umsetzung planen.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 text-left">
-          {/* LINKS — Christoph Gassner */}
-          <div className="rounded-xl border border-border bg-bg p-6 md:p-8 flex flex-col">
-            <h3 className="font-serif text-2xl tracking-tight">
-              {kontakt.ansprechpartner}
-            </h3>
+        {/* Ein gemeinsamer Block: kombiniertes Logo oben, darunter beide
+            Kontakte (Desktop nebeneinander, Handy untereinander). */}
+        <div className="rounded-xl border border-border bg-bg p-6 md:p-8 mb-12">
+          <div className="mb-8">
+            <Image
+              src={kontakt.logoSrc}
+              alt="Consulting Gassner & MHZ Beratung"
+              width={640}
+              height={240}
+              className="w-[85%] max-w-[280px] md:max-w-[360px] h-auto mx-auto"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 text-left">
+            {/* LINKS — Christoph Gassner */}
+            <div className="flex flex-col">
+              <h3 className="font-serif text-2xl tracking-tight">
+                {kontakt.ansprechpartner}
+              </h3>
             <p className="text-sm uppercase tracking-[0.2em] text-fg-muted mt-1">
               {kontakt.unternehmen}
             </p>
@@ -71,9 +74,9 @@ export function Kontakt() {
             </div>
           </div>
 
-          {/* RECHTS — Mario Hölzl, MHZ Beratung */}
-          <div className="rounded-xl border border-border bg-bg p-6 md:p-8 flex flex-col">
-            <h3 className="font-serif text-2xl tracking-tight">
+            {/* RECHTS — Mario Hölzl, MHZ Beratung */}
+            <div className="flex flex-col border-t border-border pt-8 md:border-t-0 md:border-l md:pt-0 md:pl-10">
+              <h3 className="font-serif text-2xl tracking-tight">
               {kontaktPartner.ansprechpartner}
             </h3>
             <a
@@ -117,6 +120,7 @@ export function Kontakt() {
                 <MapPin className="w-4 h-4 flex-shrink-0 mt-1" strokeWidth={1.5} />
                 <span>{kontaktPartner.adresse}</span>
               </div>
+            </div>
             </div>
           </div>
         </div>

@@ -114,6 +114,28 @@ function StandortCard({ s, i }: { s: Standort; i: number }) {
   );
 }
 
+// Kopfzeile einer Phase (Titel · Summe · Zeitrahmen) — als reiner Inhalt,
+// damit sie sowohl im klappbaren Button als auch statisch verwendet werden kann.
+function PhaseHeaderInhalt({ phase }: { phase: (typeof phasen)[number] }) {
+  return (
+    <div className="flex-1">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <h3 className="font-serif text-3xl tracking-tight">{phase.titel}</h3>
+        {phase.summe && (
+          <p className="text-sm text-fg-muted">
+            {formatNumber(phase.summe.module)} Module ·{" "}
+            {formatNumber(phase.summe.leistung_kWp)} kWp ·{" "}
+            {formatNumber(phase.summe.speicher_kWh)} kWh Speicher
+          </p>
+        )}
+      </div>
+      <p className="text-sm uppercase tracking-[0.15em] text-fg-muted mt-2">
+        {phase.zeitrahmen}
+      </p>
+    </div>
+  );
+}
+
 function PhaseBlock({
   phase,
   standorteDerPhase,
@@ -135,21 +157,7 @@ function PhaseBlock({
         aria-controls={inhaltId}
         className="group w-full text-left border-t border-border pt-8 mb-10 flex items-start gap-6"
       >
-        <div className="flex-1">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-            <h3 className="font-serif text-3xl tracking-tight">{phase.titel}</h3>
-            {phase.summe && (
-              <p className="text-sm text-fg-muted">
-                {formatNumber(phase.summe.module)} Module ·{" "}
-                {formatNumber(phase.summe.leistung_kWp)} kWp ·{" "}
-                {formatNumber(phase.summe.speicher_kWh)} kWh Speicher
-              </p>
-            )}
-          </div>
-          <p className="text-sm uppercase tracking-[0.15em] text-fg-muted mt-2">
-            {phase.zeitrahmen}
-          </p>
-        </div>
+        <PhaseHeaderInhalt phase={phase} />
 
         <ChevronDown
           className={`w-6 h-6 mt-1 shrink-0 text-fg-muted transition-transform duration-300 ${
@@ -181,6 +189,18 @@ function PhaseBlock({
   );
 }
 
+// Phase 3 ist nicht klappbar: nur Überschrift + Untertitel, dauerhaft
+// geschlossen — kein Toggle, kein Chevron, keine Standort-Karten.
+function PhaseStatisch({ phase }: { phase: (typeof phasen)[number] }) {
+  return (
+    <div>
+      <div className="border-t border-border pt-8 flex items-start gap-6">
+        <PhaseHeaderInhalt phase={phase} />
+      </div>
+    </div>
+  );
+}
+
 export function Standorte() {
   return (
     <SectionWrapper id="standorte">
@@ -194,14 +214,20 @@ export function Standorte() {
       </p>
 
       <div className="space-y-20">
-        {phasen.map((phase) => (
-          <PhaseBlock
-            key={phase.nummer}
-            phase={phase}
-            standorteDerPhase={standorte.filter((s) => s.phase === phase.nummer)}
-            offenDefault={phase.nummer === 1}
-          />
-        ))}
+        {phasen.map((phase) =>
+          phase.nummer === 3 ? (
+            <PhaseStatisch key={phase.nummer} phase={phase} />
+          ) : (
+            <PhaseBlock
+              key={phase.nummer}
+              phase={phase}
+              standorteDerPhase={standorte.filter(
+                (s) => s.phase === phase.nummer,
+              )}
+              offenDefault={phase.nummer === 1}
+            />
+          ),
+        )}
       </div>
     </SectionWrapper>
   );
