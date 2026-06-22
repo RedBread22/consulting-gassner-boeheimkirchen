@@ -6,8 +6,9 @@ import { standorte, phasen } from "../../../../content/boeheimkirchen";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 
 // Nur Standorte mit konkreten Kennzahlen bekommen eine Detailseite.
+// metaOnly-Standorte (z. B. ein reines Speichersystem) bleiben ohne eigene Seite.
 function hatDaten(s: (typeof standorte)[number]): boolean {
-  return s.leistung_kWp != null || s.speicher_kWh != null;
+  return (s.leistung_kWp != null || s.speicher_kWh != null) && !s.metaOnly;
 }
 
 export function generateStaticParams() {

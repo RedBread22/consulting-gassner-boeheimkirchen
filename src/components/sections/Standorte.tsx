@@ -15,8 +15,10 @@ function formatNumber(n: number): string {
 
 // Standorte mit konkreten Kennzahlen bekommen eine verlinkte Karte + Detailseite.
 // Standorte ohne Werte erscheinen als reine Plan-Karte (Name/Typ, ohne Link).
+// metaOnly-Standorte (z. B. ein reines Speichersystem) bekommen trotz
+// vorhandener Kennzahlen keinen Link/keine Detailseite.
 function hatDaten(s: Standort): boolean {
-  return s.leistung_kWp != null || s.speicher_kWh != null;
+  return (s.leistung_kWp != null || s.speicher_kWh != null) && !s.metaOnly;
 }
 
 function StandortCardInhalt({ s }: { s: Standort }) {
@@ -25,18 +27,19 @@ function StandortCardInhalt({ s }: { s: Standort }) {
 
   return (
     <>
-      {s.bildSrc ? (
-        <Image
-          src={s.bildSrc}
-          alt={s.name}
-          width={800}
-          height={600}
-          unoptimized={true}
-          className="w-full aspect-[4/3] object-cover"
-        />
-      ) : (
-        <ImagePlaceholder label={s.bildPlatzhalter ?? s.name} />
-      )}
+      {!s.metaOnly &&
+        (s.bildSrc ? (
+          <Image
+            src={s.bildSrc}
+            alt={s.name}
+            width={800}
+            height={600}
+            unoptimized={true}
+            className="w-full aspect-[4/3] object-cover"
+          />
+        ) : (
+          <ImagePlaceholder label={s.bildPlatzhalter ?? s.name} />
+        ))}
 
       <div className="p-6">
         <h3 className="font-serif text-2xl tracking-tight mb-2">{s.name}</h3>
@@ -124,14 +127,21 @@ function PhaseHeaderInhalt({ phase }: { phase: (typeof phasen)[number] }) {
         {phase.summe && (
           <p className="text-sm text-fg-muted">
             {formatNumber(phase.summe.module)} Module ·{" "}
-            {formatNumber(phase.summe.leistung_kWp)} kWp ·{" "}
-            {formatNumber(phase.summe.speicher_kWh)} kWh Speicher
+            {formatNumber(phase.summe.leistung_kWp)} kWp
+            {phase.summe.speicher_kWh != null && (
+              <> · {formatNumber(phase.summe.speicher_kWh)} kWh Speicher</>
+            )}
           </p>
         )}
       </div>
       <p className="text-sm uppercase tracking-[0.15em] text-fg-muted mt-2">
         {phase.zeitrahmen}
       </p>
+      {phase.anschaffungNetto_eur != null && (
+        <p className="text-sm text-fg-muted mt-1">
+          Anschaffung netto {formatNumber(phase.anschaffungNetto_eur)} €
+        </p>
+      )}
     </div>
   );
 }
@@ -189,7 +199,7 @@ function PhaseBlock({
   );
 }
 
-// Phase 3 ist nicht klappbar: nur Überschrift + Untertitel, dauerhaft
+// Phase 4 ist nicht klappbar: nur Überschrift + Untertitel, dauerhaft
 // geschlossen — kein Toggle, kein Chevron, keine Standort-Karten.
 function PhaseStatisch({ phase }: { phase: (typeof phasen)[number] }) {
   return (
@@ -208,14 +218,14 @@ export function Standorte() {
         Die Timeline für eine unabhängige Gemeinde
       </h2>
       <p className="text-fg-muted text-lg mb-16 max-w-2xl">
-        Das Konzept wird in drei Phasen umgesetzt — von der sofortigen Umsetzung
+        Das Konzept wird in vier Phasen umgesetzt — von den Sofortmaßnahmen
         bis zu langfristig zu prüfenden Standorten. Klicken Sie auf eine Phase,
         um die Standorte ein- oder auszuklappen.
       </p>
 
       <div className="space-y-20">
         {phasen.map((phase) =>
-          phase.nummer === 3 ? (
+          phase.nummer === 4 ? (
             <PhaseStatisch key={phase.nummer} phase={phase} />
           ) : (
             <PhaseBlock
