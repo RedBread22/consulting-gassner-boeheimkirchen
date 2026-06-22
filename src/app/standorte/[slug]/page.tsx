@@ -6,8 +6,9 @@ import { standorte, phasen } from "../../../../content/boeheimkirchen";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 
 // Nur Standorte mit konkreten Kennzahlen bekommen eine Detailseite.
+// Reine Speicher-Posten (nurSpeicher) sind ausgenommen.
 function hatDaten(s: (typeof standorte)[number]): boolean {
-  return s.leistung_kWp != null || s.speicher_kWh != null;
+  return !s.nurSpeicher && (s.leistung_kWp != null || s.speicher_kWh != null);
 }
 
 export function generateStaticParams() {
@@ -59,7 +60,7 @@ export default function StandortDetail({ params }: Props) {
 
         {phase && (
           <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-4">
-            {phase.titel} · {phase.zeitrahmen}
+            {phase.titel}
           </p>
         )}
 

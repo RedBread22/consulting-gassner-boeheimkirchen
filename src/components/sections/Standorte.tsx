@@ -15,8 +15,9 @@ function formatNumber(n: number): string {
 
 // Standorte mit konkreten Kennzahlen bekommen eine verlinkte Karte + Detailseite.
 // Standorte ohne Werte erscheinen als reine Plan-Karte (Name/Typ, ohne Link).
+// Reine Speicher-Posten (nurSpeicher) bleiben ohne Detailseite/Verlinkung.
 function hatDaten(s: Standort): boolean {
-  return s.leistung_kWp != null || s.speicher_kWh != null;
+  return !s.nurSpeicher && (s.leistung_kWp != null || s.speicher_kWh != null);
 }
 
 function StandortCardInhalt({ s }: { s: Standort }) {
@@ -25,18 +26,20 @@ function StandortCardInhalt({ s }: { s: Standort }) {
 
   return (
     <>
-      {s.bildSrc ? (
-        <Image
-          src={s.bildSrc}
-          alt={s.name}
-          width={800}
-          height={600}
-          unoptimized={true}
-          className="w-full aspect-[4/3] object-cover"
-        />
-      ) : (
-        <ImagePlaceholder label={s.bildPlatzhalter ?? s.name} />
-      )}
+      {/* Reine Speicher-Posten brauchen kein Bild/Platzhalter. */}
+      {!s.nurSpeicher &&
+        (s.bildSrc ? (
+          <Image
+            src={s.bildSrc}
+            alt={s.name}
+            width={800}
+            height={600}
+            unoptimized={true}
+            className="w-full aspect-[4/3] object-cover"
+          />
+        ) : (
+          <ImagePlaceholder label={s.bildPlatzhalter ?? s.name} />
+        ))}
 
       <div className="p-6">
         <h3 className="font-serif text-2xl tracking-tight mb-2">{s.name}</h3>
@@ -65,7 +68,7 @@ function StandortCardInhalt({ s }: { s: Standort }) {
             {s.speicher_kWh != null && (
               <span className="flex items-center gap-1">
                 <Battery className="w-3.5 h-3.5" strokeWidth={1.5} />
-                {s.speicher_kWh} kWh
+                {formatNumber(s.speicher_kWh)} kWh
               </span>
             )}
             {s.notstrom && (
@@ -124,14 +127,14 @@ function PhaseHeaderInhalt({ phase }: { phase: (typeof phasen)[number] }) {
         {phase.summe && (
           <p className="text-sm text-fg-muted">
             {formatNumber(phase.summe.module)} Module ·{" "}
-            {formatNumber(phase.summe.leistung_kWp)} kWp ·{" "}
-            {formatNumber(phase.summe.speicher_kWh)} kWh Speicher
+            {formatNumber(phase.summe.leistung_kWp)} kWp
+            {"speicher_kWh" in phase.summe &&
+              phase.summe.speicher_kWh != null && (
+                <> · {formatNumber(phase.summe.speicher_kWh)} kWh Speicher</>
+              )}
           </p>
         )}
       </div>
-      <p className="text-sm uppercase tracking-[0.15em] text-fg-muted mt-2">
-        {phase.zeitrahmen}
-      </p>
     </div>
   );
 }
@@ -189,7 +192,7 @@ function PhaseBlock({
   );
 }
 
-// Phase 3 ist nicht klappbar: nur Überschrift + Untertitel, dauerhaft
+// Phase 4 ist nicht klappbar: nur Überschrift + Untertitel, dauerhaft
 // geschlossen — kein Toggle, kein Chevron, keine Standort-Karten.
 function PhaseStatisch({ phase }: { phase: (typeof phasen)[number] }) {
   return (
@@ -208,14 +211,14 @@ export function Standorte() {
         Die Timeline für eine unabhängige Gemeinde
       </h2>
       <p className="text-fg-muted text-lg mb-16 max-w-2xl">
-        Das Konzept wird in drei Phasen umgesetzt — von der sofortigen Umsetzung
-        bis zu langfristig zu prüfenden Standorten. Klicken Sie auf eine Phase,
-        um die Standorte ein- oder auszuklappen.
+        Das Konzept wird in vier Phasen umgesetzt — von den Sofortmaßnahmen als
+        Grundstein der Energiewende bis zu langfristigen Infrastrukturprojekten.
+        Klicken Sie auf eine Phase, um die Standorte ein- oder auszuklappen.
       </p>
 
       <div className="space-y-20">
         {phasen.map((phase) =>
-          phase.nummer === 3 ? (
+          phase.nummer === 4 ? (
             <PhaseStatisch key={phase.nummer} phase={phase} />
           ) : (
             <PhaseBlock

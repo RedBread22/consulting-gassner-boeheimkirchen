@@ -35,18 +35,18 @@ export function Ergebnis() {
       </h2>
 
       <p className="text-base md:text-lg text-fg-muted leading-relaxed max-w-2xl mb-16">
-        Die folgenden Zahlen beziehen sich auf{" "}
+        Die folgenden Zahlen beziehen sich auf den{" "}
         <span className="text-fg font-medium">
-          Phase 1 — den sofort umsetzbaren Ausbauschritt mit{" "}
+          geplanten PV-Ausbau mit{" "}
           {formatKwp(ergebnis.pvNachher.leistung_kWp)} kWp
-        </span>{" "}
-        — und nicht auf einen späteren Vollausbau.
+        </span>
+        .
       </p>
 
-      {/* Direkter Vergleich Ist-Zustand ↔ Phase 1 */}
+      {/* Direkter Vergleich Ist-Zustand ↔ nach dem Ausbau */}
       <div className="mb-20">
         <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-6">
-          Heute vs. nach Phase 1
+          Heute vs. nach dem Ausbau
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
@@ -81,7 +81,7 @@ export function Ergebnis() {
           {/* NACHHER */}
           <div className="rounded-2xl bg-fg text-bg p-6 md:p-8">
             <p className="text-xs uppercase tracking-[0.15em] text-bg/60 mb-6">
-              Nach Phase 1
+              Nach dem Ausbau
             </p>
             <dl className="space-y-5">
               <div>
@@ -126,7 +126,7 @@ export function Ergebnis() {
           </div>
           <div>
             <div className="flex justify-between text-sm mb-2">
-              <span className="font-medium">PV-Leistung nach Phase 1</span>
+              <span className="font-medium">PV-Leistung nach dem Ausbau</span>
               <span className="tabular-nums font-medium">{formatKwp(pvNachher)} kWp</span>
             </div>
             <div className="h-3 rounded-full bg-border overflow-hidden">

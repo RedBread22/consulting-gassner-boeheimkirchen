@@ -88,7 +88,7 @@ export const konzeptZiele = [
   "Senkung des Energieverbrauchs und der Energiekosten durch Effizienzmaßnahmen",
 ] as const;
 
-export type Phase = 1 | 2 | 3;
+export type Phase = 1 | 2 | 3 | 4;
 
 export type Standort = {
   slug: string;
@@ -105,12 +105,15 @@ export type Standort = {
   bildPlatzhalter?: string;
   bildSrc?: string;
   pdf?: string;
+  // Reiner Speicher-/Notstrom-Posten ohne PV: nur das Speicher-Feld anzeigen,
+  // kein Bild, kein PDF, keine Detailseite/Verlinkung.
+  nurSpeicher?: boolean;
 };
 
 // Quelle der Wahrheit: Standort-Tabelle. kWp-Werte werden direkt übernommen
 // (nicht aus der Modulzahl gerechnet — z. B. Posthaus mit 330-W-Modulen).
 export const standorte: Standort[] = [
-  // ── PHASE 1 — kurzfristig ──────────────────────────────────────────────
+  // ── PHASE 1 — Sofortmaßnahmen / Grundstein der Energiewende ─────────────
   {
     slug: "parkplatz-mittelschule",
     name: "Parkplatz Mittelschule",
@@ -124,20 +127,6 @@ export const standorte: Standort[] = [
     bildPlatzhalter: "Parkplatz Mittelschule – Carport mit PV",
     bildSrc: "/images/standorte/parkplatz-mittelschule.webp",
     pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Mittelschule_Carport.pdf",
-  },
-  {
-    slug: "parkplatz-bahnhof",
-    name: "Parkplatz Bahnhof",
-    phase: 1,
-    typ: "Carport",
-    adresse: "Bahnhofstraße 2",
-    module: 306,
-    leistung_kWp: 137.7,
-    beschreibung:
-      "Größter Einzelstandort des Konzepts. Carport-Anlage am Bahnhof-Parkplatz mit hohem Eigennutzungspotenzial durch die geplanten Ladestationen direkt am Standort.",
-    bildPlatzhalter: "Parkplatz Bahnhof – Carport-PV",
-    bildSrc: "/images/standorte/parkplatz-bahnhof.webp",
-    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Bahnhof_Carport.pdf",
   },
   {
     slug: "mittelschule",
@@ -170,8 +159,34 @@ export const standorte: Standort[] = [
     bildSrc: "/images/standorte/sportplatz.webp",
     pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Sportplatz.pdf",
   },
+  {
+    // Eigener Posten ohne PV — nur zentraler Speicher inkl. Notstrom.
+    slug: "speichersystem",
+    name: "Speichersystem inkl. Notstrom",
+    phase: 1,
+    speicher_kWh: 241.2,
+    notstrom: true,
+    nurSpeicher: true,
+    besonderheit: "Speicher & Notstrom",
+    beschreibung:
+      "Zentrales Speichersystem inklusive Notstrom — ohne eigene PV-Fläche. Erhöht die Versorgungssicherheit und macht die angebundenen Standorte blackoutfähig.",
+  },
 
-  // ── PHASE 2 — mittelfristig ────────────────────────────────────────────
+  // ── PHASE 2 — Förder- und Entwicklungsprojekte ─────────────────────────
+  {
+    slug: "parkplatz-bahnhof",
+    name: "Parkplatz Bahnhof",
+    phase: 2,
+    typ: "Carport",
+    adresse: "Bahnhofstraße 2",
+    module: 306,
+    leistung_kWp: 137.7,
+    beschreibung:
+      "Größter Einzelstandort des Konzepts. Carport-Anlage am Bahnhof-Parkplatz mit hohem Eigennutzungspotenzial durch die geplanten Ladestationen direkt am Standort.",
+    bildPlatzhalter: "Parkplatz Bahnhof – Carport-PV",
+    bildSrc: "/images/standorte/parkplatz-bahnhof.webp",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Bahnhof_Carport.pdf",
+  },
   {
     slug: "raiffeisen-parkplatz",
     name: "Raiffeisen Parkplatz",
@@ -186,10 +201,12 @@ export const standorte: Standort[] = [
     bildSrc: "/images/standorte/raiffeisen-parkplatz.webp",
     pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Raiffeisen_Parkplatz_Carport.pdf",
   },
+
+  // ── PHASE 3 — Mittelfristige Ausbauprojekte (2027–2028) ────────────────
   {
     slug: "kindergarten-aufeld",
     name: "Kindergarten Aufeld",
-    phase: 2,
+    phase: 3,
     typ: "Aufdach (Blechfalz)",
     adresse: "Aufeldstraße 8",
     module: 49,
@@ -204,7 +221,7 @@ export const standorte: Standort[] = [
   {
     slug: "bauhof",
     name: "Bauhof",
-    phase: 2,
+    phase: 3,
     typ: "Flachdach (Kies)",
     adresse: "Neustiftgasse 50",
     module: 130,
@@ -219,7 +236,7 @@ export const standorte: Standort[] = [
   {
     slug: "polizei",
     name: "Polizei",
-    phase: 2,
+    phase: 3,
     typ: "Bestand",
     adresse: "Schubertgasse 1",
     speicher_kWh: 24,
@@ -231,11 +248,11 @@ export const standorte: Standort[] = [
     bildSrc: "/images/standorte/polizei.webp",
   },
 
-  // ── PHASE 3 — langfristig ──────────────────────────────────────────────
+  // ── PHASE 4 — Langfristige Infrastrukturprojekte ───────────────────────
   {
     slug: "posthaus",
     name: "Posthaus Böheimkirchen",
-    phase: 3,
+    phase: 4,
     typ: "Indach",
     adresse: "Untere Hauptstraße 7",
     module: 56,
@@ -250,60 +267,67 @@ export const standorte: Standort[] = [
   {
     slug: "volksschule",
     name: "Volksschule",
-    phase: 3,
+    phase: 4,
     bildSrc: "/images/standorte/volksschule.webp",
   },
   {
     slug: "kindergarten-mauterheim",
     name: "Kindergarten Mauterheim",
-    phase: 3,
+    phase: 4,
     bildSrc: "/images/standorte/kindergarten-mauterheim.webp",
   },
   {
     slug: "pve",
     name: "PVE",
-    phase: 3,
+    phase: 4,
     bildSrc: "/images/standorte/pve.webp",
   },
   {
     slug: "friedhof",
     name: "Friedhof",
-    phase: 3,
+    phase: 4,
     bildSrc: "/images/standorte/friedhof.webp",
   },
   {
     slug: "gemeindeamt",
     name: "Gemeindeamt Böheimkirchen",
-    phase: 3,
+    phase: 4,
     bildSrc: "/images/standorte/gemeindeamt.webp",
   },
 ];
 
-// Phasen-Metadaten inkl. Summen aus der Standort-Tabelle (Phase 1 & 2).
+// Phasen-Metadaten inkl. Summen, neu berechnet aus den Stationen je Phase.
+// Summe-Felder (module · leistung_kWp · speicher_kWh) sind optional; fehlt ein
+// Wert (z. B. kein Speicher in Phase 2), wird er nicht angezeigt.
 export const phasen = [
   {
     nummer: 1 as Phase,
-    titel: "Phase 1 — Kurzfristig",
-    zeitrahmen: "Sofortige Umsetzung",
-    summe: { module: 730, leistung_kWp: 328.5, speicher_kWh: 108 },
+    titel: "Phase 1 — Sofortmaßnahmen / Grundstein der Energiewende",
+    // 189+203+32 Module · 85,05+91,35+14,4 kWp · 84+24+241,2 kWh Speicher
+    summe: { module: 424, leistung_kWp: 190.8, speicher_kWh: 349.2 },
   },
   {
     nummer: 2 as Phase,
-    titel: "Phase 2 — Mittelfristig",
-    zeitrahmen: "Betrachtung im Herbst · Umsetzung Q1–Q3 2027",
-    summe: { module: 353, leistung_kWp: 158.85, speicher_kWh: 96 },
+    titel: "Phase 2 — Förder- und Entwicklungsprojekte",
+    // 306+174 Module · 137,7+78,3 kWp · kein Speicher
+    summe: { module: 480, leistung_kWp: 216 },
   },
   {
     nummer: 3 as Phase,
-    titel: "Phase 3 — Langfristig",
-    zeitrahmen: "Betrachtung während mittelfristig",
+    titel: "Phase 3 — Mittelfristige Ausbauprojekte (2027–2028)",
+    // 49+130 Module · 22,05+58,5 kWp · 36+36+24 kWh Speicher
+    summe: { module: 179, leistung_kWp: 80.55, speicher_kWh: 96 },
+  },
+  {
+    nummer: 4 as Phase,
+    titel: "Phase 4 — Langfristige Infrastrukturprojekte",
     summe: null,
   },
 ] as const;
 
 // Quelle der Wahrheit: aktualisierte Wirtschaftlichkeits-Excel (Christoph).
-// Alle Werte beziehen sich auf Phase 1 = 328,5 kWp (sofort umsetzbar),
-// NICHT auf einen Vollausbau.
+// Alle Werte beziehen sich auf den geplanten PV-Ausbau mit 328,5 kWp
+// (unverändert — unabhängig von der neuen Phasen-Gliederung der Standorte).
 export const ergebnis = {
   gesamtLeistung_kWp: 328.5,
   gesamtSpeicher_kWh: 108,
@@ -349,7 +373,7 @@ export const wirtschaftlichkeit = {
 
 // BENEFIT 1 — Finanzierung über Kapazitätsleasing.
 // Eckdaten aus der aktualisierten Wirtschaftlichkeitsberechnung (Consulting
-// Gassner) — Phase 1 = 328,5 kWp, sofort umsetzbar.
+// Gassner) — geplanter PV-Ausbau mit 328,5 kWp (Zahlen unverändert).
 export const finanzierung = {
   stand: "01.04.2026",
   preisProKwh_ct: 16.05,
