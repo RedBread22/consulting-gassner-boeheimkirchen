@@ -88,7 +88,7 @@ export const konzeptZiele = [
   "Senkung des Energieverbrauchs und der Energiekosten durch Effizienzmaßnahmen",
 ] as const;
 
-export type Phase = 1 | 2 | 3;
+export type Phase = 1 | 2 | 3 | 4;
 
 export type Standort = {
   slug: string;
@@ -105,12 +105,17 @@ export type Standort = {
   bildPlatzhalter?: string;
   bildSrc?: string;
   pdf?: string;
+  // Reine Kennzahlen-Karte ohne Bild/PDF/Detailseite (z. B. ein Speichersystem
+  // ohne eigene PV-Fläche).
+  metaOnly?: boolean;
 };
 
 // Quelle der Wahrheit: Standort-Tabelle. kWp-Werte werden direkt übernommen
 // (nicht aus der Modulzahl gerechnet — z. B. Posthaus mit 330-W-Modulen).
+// Stand: Christophs FINAL-Excel — Wirtschaftlichkeit umgestellt auf Phase 1
+// (190,8 kWp), 4-Phasen-Struktur.
 export const standorte: Standort[] = [
-  // ── PHASE 1 — kurzfristig ──────────────────────────────────────────────
+  // ── PHASE 1 — Sofortmaßnahmen / Grundstein der Energiewende ────────────
   {
     slug: "parkplatz-mittelschule",
     name: "Parkplatz Mittelschule",
@@ -124,20 +129,6 @@ export const standorte: Standort[] = [
     bildPlatzhalter: "Parkplatz Mittelschule – Carport mit PV",
     bildSrc: "/images/standorte/parkplatz-mittelschule.webp",
     pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Mittelschule_Carport.pdf",
-  },
-  {
-    slug: "parkplatz-bahnhof",
-    name: "Parkplatz Bahnhof",
-    phase: 1,
-    typ: "Carport",
-    adresse: "Bahnhofstraße 2",
-    module: 306,
-    leistung_kWp: 137.7,
-    beschreibung:
-      "Größter Einzelstandort des Konzepts. Carport-Anlage am Bahnhof-Parkplatz mit hohem Eigennutzungspotenzial durch die geplanten Ladestationen direkt am Standort.",
-    bildPlatzhalter: "Parkplatz Bahnhof – Carport-PV",
-    bildSrc: "/images/standorte/parkplatz-bahnhof.webp",
-    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Bahnhof_Carport.pdf",
   },
   {
     slug: "mittelschule",
@@ -170,8 +161,32 @@ export const standorte: Standort[] = [
     bildSrc: "/images/standorte/sportplatz.webp",
     pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Sportplatz.pdf",
   },
+  {
+    // Reine Speicher-/Notstromposition ohne eigene PV-Fläche — daher kein
+    // Bild, kein PDF und keine eigene Detailseite (metaOnly).
+    slug: "speichersystem-mittelschule",
+    name: "Speichersystem inkl. Notstrom (Mittelschule)",
+    phase: 1,
+    speicher_kWh: 241.2,
+    notstrom: true,
+    metaOnly: true,
+  },
 
-  // ── PHASE 2 — mittelfristig ────────────────────────────────────────────
+  // ── PHASE 2 — Förder- und Entwicklungsprojekte ──────────────────────────
+  {
+    slug: "parkplatz-bahnhof",
+    name: "Parkplatz Bahnhof",
+    phase: 2,
+    typ: "Carport",
+    adresse: "Bahnhofstraße 2",
+    module: 306,
+    leistung_kWp: 137.7,
+    beschreibung:
+      "Größter Einzelstandort des Konzepts. Carport-Anlage am Bahnhof-Parkplatz mit hohem Eigennutzungspotenzial durch die geplanten Ladestationen direkt am Standort.",
+    bildPlatzhalter: "Parkplatz Bahnhof – Carport-PV",
+    bildSrc: "/images/standorte/parkplatz-bahnhof.webp",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Bahnhof_Carport.pdf",
+  },
   {
     slug: "raiffeisen-parkplatz",
     name: "Raiffeisen Parkplatz",
@@ -186,10 +201,12 @@ export const standorte: Standort[] = [
     bildSrc: "/images/standorte/raiffeisen-parkplatz.webp",
     pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Raiffeisen_Parkplatz_Carport.pdf",
   },
+
+  // ── PHASE 3 — Mittelfristige Ausbauprojekte (2027–2028) ─────────────────
   {
     slug: "kindergarten-aufeld",
     name: "Kindergarten Aufeld",
-    phase: 2,
+    phase: 3,
     typ: "Aufdach (Blechfalz)",
     adresse: "Aufeldstraße 8",
     module: 49,
@@ -204,7 +221,7 @@ export const standorte: Standort[] = [
   {
     slug: "bauhof",
     name: "Bauhof",
-    phase: 2,
+    phase: 3,
     typ: "Flachdach (Kies)",
     adresse: "Neustiftgasse 50",
     module: 130,
@@ -219,7 +236,7 @@ export const standorte: Standort[] = [
   {
     slug: "polizei",
     name: "Polizei",
-    phase: 2,
+    phase: 3,
     typ: "Bestand",
     adresse: "Schubertgasse 1",
     speicher_kWh: 24,
@@ -231,11 +248,11 @@ export const standorte: Standort[] = [
     bildSrc: "/images/standorte/polizei.webp",
   },
 
-  // ── PHASE 3 — langfristig ──────────────────────────────────────────────
+  // ── PHASE 4 — Langfristige Infrastrukturprojekte ────────────────────────
   {
     slug: "posthaus",
     name: "Posthaus Böheimkirchen",
-    phase: 3,
+    phase: 4,
     typ: "Indach",
     adresse: "Untere Hauptstraße 7",
     module: 56,
@@ -250,94 +267,133 @@ export const standorte: Standort[] = [
   {
     slug: "volksschule",
     name: "Volksschule",
-    phase: 3,
+    phase: 4,
     bildSrc: "/images/standorte/volksschule.webp",
   },
   {
     slug: "kindergarten-mauterheim",
     name: "Kindergarten Mauterheim",
-    phase: 3,
+    phase: 4,
     bildSrc: "/images/standorte/kindergarten-mauterheim.webp",
   },
   {
     slug: "pve",
     name: "PVE",
-    phase: 3,
+    phase: 4,
     bildSrc: "/images/standorte/pve.webp",
   },
   {
     slug: "friedhof",
     name: "Friedhof",
-    phase: 3,
+    phase: 4,
     bildSrc: "/images/standorte/friedhof.webp",
   },
   {
     slug: "gemeindeamt",
     name: "Gemeindeamt Böheimkirchen",
-    phase: 3,
+    phase: 4,
     bildSrc: "/images/standorte/gemeindeamt.webp",
   },
 ];
 
-// Phasen-Metadaten inkl. Summen aus der Standort-Tabelle (Phase 1 & 2).
-export const phasen = [
+type PhaseMeta = {
+  nummer: Phase;
+  titel: string;
+  zeitrahmen: string;
+  anschaffungNetto_eur: number | null;
+  summe: { module: number; leistung_kWp: number; speicher_kWh?: number } | null;
+};
+
+// Phasen-Metadaten inkl. Summen aus der Standort-Tabelle und Anschaffung
+// netto je Phase (Christophs FINAL-Excel). Klappverhalten: Phase 1 ist
+// standardmäßig offen, Phase 2 & 3 klappbar/geschlossen, Phase 4 ist nicht
+// klappbar (nur Überschrift, siehe Standorte.tsx).
+export const phasen: PhaseMeta[] = [
   {
-    nummer: 1 as Phase,
-    titel: "Phase 1 — Kurzfristig",
+    nummer: 1,
+    titel: "Phase 1 — Sofortmaßnahmen / Grundstein der Energiewende",
     zeitrahmen: "Sofortige Umsetzung",
-    summe: { module: 730, leistung_kWp: 328.5, speicher_kWh: 108 },
+    anschaffungNetto_eur: 492000,
+    summe: { module: 424, leistung_kWp: 190.8, speicher_kWh: 349.2 },
   },
   {
-    nummer: 2 as Phase,
-    titel: "Phase 2 — Mittelfristig",
+    nummer: 2,
+    titel: "Phase 2 — Förder- und Entwicklungsprojekte",
     zeitrahmen: "Betrachtung im Herbst · Umsetzung Q1–Q3 2027",
-    summe: { module: 353, leistung_kWp: 158.85, speicher_kWh: 96 },
+    anschaffungNetto_eur: 690158,
+    summe: { module: 480, leistung_kWp: 216 },
   },
   {
-    nummer: 3 as Phase,
-    titel: "Phase 3 — Langfristig",
-    zeitrahmen: "Betrachtung während mittelfristig",
+    nummer: 3,
+    titel: "Phase 3 — Mittelfristige Ausbauprojekte (2027–2028)",
+    zeitrahmen: "Betrachtung nach Phase 1 & 2",
+    anschaffungNetto_eur: 250000,
+    summe: { module: 179, leistung_kWp: 80.55, speicher_kWh: 96 },
+  },
+  {
+    nummer: 4,
+    titel: "Phase 4 — Langfristige Infrastrukturprojekte",
+    zeitrahmen: "Langfristig zu prüfende Standorte",
+    anschaffungNetto_eur: null,
     summe: null,
   },
-] as const;
+];
 
-// Quelle der Wahrheit: aktualisierte Wirtschaftlichkeits-Excel (Christoph).
-// Alle Werte beziehen sich auf Phase 1 = 328,5 kWp (sofort umsetzbar),
-// NICHT auf einen Vollausbau.
+// Quelle der Wahrheit: Christophs FINAL-Excel — gesamte Wirtschaftlichkeit
+// umgestellt auf Phase 1 = 190,8 kWp (sofort umsetzbar), NICHT auf einen
+// Vollausbau.
 export const ergebnis = {
-  gesamtLeistung_kWp: 328.5,
-  gesamtSpeicher_kWh: 108,
+  gesamtLeistung_kWp: 190.8,
+  gesamtSpeicher_kWh: 349.2,
   pvNachher: {
-    leistung_kWp: 328.5,
-    leistung_kWh: 344925,
-    sonnenstunden: 1050,
-    // ACHTUNG — Platzhalter: Die Eigennutzen-Quote lässt sich aus den neuen
-    // 328,5-kWp-Daten nicht sauber ableiten. Der korrekte Wert wird von
-    // Christoph nachgeliefert; bis dahin steht hier bewusst der alte Wert.
-    // Hier (und nur hier) anpassen, sobald der Wert vorliegt — NICHT schätzen.
-    eigennutzen_prozent: 86,
-    ueberschuss_prozent: 14,
+    leistung_kWp: 190.8,
+    leistung_kWh: 219420,
+    sonnenstunden: 1150,
+    // Eigennutzungsquote (Phase 1, 190,8 kWp), hergeleitet aus der FINAL-Excel:
+    // Eigennutzen = direkte PV 74.350,60 kWh + Energiegemeinschaft/EEG
+    // 89.862,32 kWh = 164.212,92 kWh; Überschuss (OeMAG) = 22.465,58 kWh
+    // → 88 % / 12 %. Einzige Stelle zum Anpassen — von Christoph final
+    // bestätigen lassen.
+    eigennutzen_prozent: 88,
+    ueberschuss_prozent: 12,
   },
 } as const;
 
 export const wirtschaftlichkeit = {
-  investitionskosten_eur: 776000,
-  moeglicheFoerderung_eur: 219634.5,
-  finanzierung_ct_kWh: 16.05,
-  finanzierungskostenProJahr_eur: 55360.46,
-  finanzierungsdauer_jahre: 13.8,
-  einsparungProJahr_finanzierung_eur: 19114.52,
-  einsparungProJahr_nachFinanzierung_eur: 74474.98,
+  investitionskosten_eur: 492000,
+  moeglicheFoerderung_eur: 98400,
+  finanzierung_ct_kWh: 15.97,
+  finanzierungskostenProJahr_eur: 35041.37,
+  finanzierungsdauer_jahre: 13.6,
+  einsparungProJahr_finanzierung_eur: 20467.53,
+  einsparungProJahr_nachFinanzierung_eur: 55508.9,
   // Headline = Netto (nach Abzug der Zusatzkosten über 30 Jahre) — ehrlicher
   // als der Brutto-Wert. Brutto und Zusatzkosten werden sekundär ausgewiesen.
-  gesamteinsparung_30Jahre_netto_eur: 1252811.15,
-  gesamteinsparung_30Jahre_brutto_eur: 1475811.15,
-  zusatzkosten_30Jahre_eur: 223000,
+  gesamteinsparung_30Jahre_netto_eur: 878304.43,
+  gesamteinsparung_30Jahre_brutto_eur: 1188704.43,
+  zusatzkosten_30Jahre_eur: 310400,
+  // Aufgeschlüsselt nach Zeitraum (während/nach Finanzierung), je mit eigener
+  // Postenliste und Zwischensumme.
   zusatzkostenAufschluesselung: [
-    { label: "Wartung", betrag_eur: 75000 },
-    { label: "Komponententausch Jahr 10", betrag_eur: 50000 },
-    { label: "Komponententausch Jahr 20", betrag_eur: 50000 },
-    { label: "5-jährige Generalwartung", betrag_eur: 48000 },
+    {
+      phase: "Während Finanzierung (13,6 J)",
+      summe_eur: 183400,
+      posten: [
+        { label: "Wartung", betrag_eur: 34000 },
+        { label: "Komponententausch", betrag_eur: 35000 },
+        { label: "Generalwartung", betrag_eur: 16000 },
+        { label: "Restwert lt. Finanzierung", betrag_eur: 98400 },
+      ],
+    },
+    {
+      phase: "Nach Finanzierung (16,4 J)",
+      summe_eur: 127000,
+      posten: [
+        { label: "Wartung", betrag_eur: 41000 },
+        { label: "Komponententausch", betrag_eur: 70000 },
+        { label: "Generalwartung", betrag_eur: 16000 },
+      ],
+    },
   ],
 } as const;
 
@@ -349,15 +405,15 @@ export const wirtschaftlichkeit = {
 
 // BENEFIT 1 — Finanzierung über Kapazitätsleasing.
 // Eckdaten aus der aktualisierten Wirtschaftlichkeitsberechnung (Consulting
-// Gassner) — Phase 1 = 328,5 kWp, sofort umsetzbar.
+// Gassner) — Phase 1 = 190,8 kWp, sofort umsetzbar.
 export const finanzierung = {
   stand: "01.04.2026",
-  preisProKwh_ct: 16.05,
-  laufzeit_jahre: 13.8,
-  anschaffungswertNetto_eur: 776000,
-  moeglicheFoerderung_eur: 219634.5,
-  pvLeistung_kWp: 328.5,
-  speicher_kWh: 108,
+  preisProKwh_ct: 15.97,
+  laufzeit_jahre: 13.6,
+  anschaffungswertNetto_eur: 492000,
+  moeglicheFoerderung_eur: 98400,
+  pvLeistung_kWp: 190.8,
+  speicher_kWh: 349.2,
   // store and more — Konzept als PDF (eingebettet, scrollbar/verlinkt).
   pdf: "/pdf/store-and-more-boeheimkirchen.pdf",
   vorteile: [

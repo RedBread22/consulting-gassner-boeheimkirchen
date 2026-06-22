@@ -37,7 +37,7 @@ export function Ergebnis() {
       <p className="text-base md:text-lg text-fg-muted leading-relaxed max-w-2xl mb-16">
         Die folgenden Zahlen beziehen sich auf{" "}
         <span className="text-fg font-medium">
-          Phase 1 — den sofort umsetzbaren Ausbauschritt mit{" "}
+          Phase 1 — die Sofortmaßnahmen mit{" "}
           {formatKwp(ergebnis.pvNachher.leistung_kWp)} kWp
         </span>{" "}
         — und nicht auf einen späteren Vollausbau.
@@ -166,7 +166,12 @@ export function Ergebnis() {
           abzüglich Zusatzkosten über 30 Jahre{" "}
           {formatNumber(wirtschaftlichkeit.zusatzkosten_30Jahre_eur)} € (
           {wirtschaftlichkeit.zusatzkostenAufschluesselung
-            .map((z) => `${z.label} ${formatNumber(z.betrag_eur)} €`)
+            .map(
+              (gruppe) =>
+                `${gruppe.phase}: ${gruppe.posten
+                  .map((p) => `${p.label} ${formatNumber(p.betrag_eur)} €`)
+                  .join(" + ")} = ${formatNumber(gruppe.summe_eur)} €`,
+            )
             .join(" · ")}
           ) ={" "}
           {formatEur(wirtschaftlichkeit.gesamteinsparung_30Jahre_netto_eur)} €
