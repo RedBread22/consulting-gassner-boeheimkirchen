@@ -122,18 +122,16 @@ function StandortCard({ s, i }: { s: Standort; i: number }) {
 function PhaseHeaderInhalt({ phase }: { phase: (typeof phasen)[number] }) {
   return (
     <div className="flex-1">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-        <h3 className="font-serif text-3xl tracking-tight">{phase.titel}</h3>
-        {phase.summe && (
-          <p className="text-sm text-fg-muted">
-            {formatNumber(phase.summe.module)} Module ·{" "}
-            {formatNumber(phase.summe.leistung_kWp)} kWp
-            {phase.summe.speicher_kWh != null && (
-              <> · {formatNumber(phase.summe.speicher_kWh)} kWh Speicher</>
-            )}
-          </p>
-        )}
-      </div>
+      <h3 className="font-serif text-3xl tracking-tight">{phase.titel}</h3>
+      {phase.summe && (
+        <p className="text-sm text-fg-muted mt-2">
+          {formatNumber(phase.summe.module)} Module ·{" "}
+          {formatNumber(phase.summe.leistung_kWp)} kWp
+          {phase.summe.speicher_kWh != null && (
+            <> · {formatNumber(phase.summe.speicher_kWh)} kWh Speicher</>
+          )}
+        </p>
+      )}
       <p className="text-sm uppercase tracking-[0.15em] text-fg-muted mt-2">
         {phase.zeitrahmen}
       </p>
