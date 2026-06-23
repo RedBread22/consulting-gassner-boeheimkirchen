@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import {
   aktuellerStand,
   ergebnis,
@@ -160,23 +161,81 @@ export function Ergebnis() {
         <p className="mt-2 text-xs uppercase tracking-[0.15em] text-fg-muted font-sans">
           Gesamteinsparung auf 30 Jahre · netto (€)
         </p>
-        <p className="mt-5 mx-auto max-w-xl text-sm text-fg-muted leading-relaxed">
-          Brutto{" "}
-          {formatEur(wirtschaftlichkeit.gesamteinsparung_30Jahre_brutto_eur)} €
-          abzüglich Zusatzkosten über 30 Jahre{" "}
-          {formatNumber(wirtschaftlichkeit.zusatzkosten_30Jahre_eur)} € (
-          {wirtschaftlichkeit.zusatzkostenAufschluesselung
-            .map(
-              (gruppe) =>
-                `${gruppe.phase}: ${gruppe.posten
-                  .map((p) => `${p.label} ${formatNumber(p.betrag_eur)} €`)
-                  .join(" + ")} = ${formatNumber(gruppe.summe_eur)} €`,
-            )
-            .join(" · ")}
-          ) ={" "}
-          {formatEur(wirtschaftlichkeit.gesamteinsparung_30Jahre_netto_eur)} €
-          netto.
-        </p>
+        {/* Brutto → Netto klar aufgeschlüsselt statt als Fließtext */}
+        <div className="mt-8 mx-auto max-w-xl text-left">
+          <dl>
+            <div className="flex items-baseline justify-between gap-4 py-1.5">
+              <dt className="text-sm md:text-base text-fg-muted">
+                Brutto-Einsparung (30 Jahre)
+              </dt>
+              <dd className="tabular-nums font-serif text-lg whitespace-nowrap">
+                {formatEur(
+                  wirtschaftlichkeit.gesamteinsparung_30Jahre_brutto_eur,
+                )}{" "}
+                €
+              </dd>
+            </div>
+            <div className="flex items-baseline justify-between gap-4 py-1.5">
+              <dt className="text-sm md:text-base text-fg-muted">
+                Zusatzkosten gesamt
+              </dt>
+              <dd className="tabular-nums font-serif text-lg whitespace-nowrap">
+                − {formatEur(wirtschaftlichkeit.zusatzkosten_30Jahre_eur)} €
+              </dd>
+            </div>
+            <div className="flex items-baseline justify-between gap-4 py-2.5 mt-1 border-t border-fg/30">
+              <dt className="text-sm md:text-base font-medium">
+                Netto-Einsparung (30 Jahre)
+              </dt>
+              <dd className="tabular-nums font-serif text-lg whitespace-nowrap font-medium">
+                {formatEur(
+                  wirtschaftlichkeit.gesamteinsparung_30Jahre_netto_eur,
+                )}{" "}
+                €
+              </dd>
+            </div>
+          </dl>
+
+          {/* Detail-Aufschlüsselung der Zusatzkosten — aufklappbar, damit der
+              Block nicht zu lang wird. */}
+          <details className="group mt-6">
+            <summary className="flex cursor-pointer list-none items-center gap-2 text-xs uppercase tracking-[0.15em] text-fg-muted transition-colors hover:text-fg">
+              <ChevronDown
+                className="w-4 h-4 transition-transform group-open:rotate-180"
+                strokeWidth={1.5}
+              />
+              Zusatzkosten im Detail
+            </summary>
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {wirtschaftlichkeit.zusatzkostenAufschluesselung.map((gruppe) => (
+                <div
+                  key={gruppe.phase}
+                  className="rounded-xl border border-border p-5"
+                >
+                  <div className="mb-3 flex items-baseline justify-between gap-3">
+                    <p className="text-sm font-medium">{gruppe.phase}</p>
+                    <p className="tabular-nums font-serif text-base whitespace-nowrap">
+                      {formatNumber(gruppe.summe_eur)} €
+                    </p>
+                  </div>
+                  <ul className="space-y-1.5">
+                    {gruppe.posten.map((p) => (
+                      <li
+                        key={p.label}
+                        className="flex items-baseline justify-between gap-3 text-sm text-fg-muted"
+                      >
+                        <span>{p.label}</span>
+                        <span className="tabular-nums whitespace-nowrap">
+                          {formatNumber(p.betrag_eur)} €
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </details>
+        </div>
       </div>
 
       <div className="flex justify-center mb-20">
@@ -241,6 +300,10 @@ export function Ergebnis() {
           </tbody>
         </table>
       </div>
+
+      <p className="mt-12 text-center text-xs text-fg-muted">
+        Alle Beträge verstehen sich netto (exkl. USt.).
+      </p>
     </SectionWrapper>
   );
 }

@@ -10,7 +10,7 @@ export function Kontakt() {
     <SectionWrapper id="kontakt" soft>
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-4">
-          Nächste Schritte
+          Machen wir den Schritt gemeinsam
         </h2>
         <p className="text-lg text-fg-muted mb-12">
           Lassen Sie uns gemeinsam die Umsetzung planen.
