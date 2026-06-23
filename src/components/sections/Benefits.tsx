@@ -161,7 +161,6 @@ function Finanzierung() {
       kicker="Finanzierung"
       titel="Kapazitätsleasing"
       Icon={Wallet}
-      offenDefault
     >
       <p className="text-base md:text-lg leading-relaxed text-fg-muted mb-8 max-w-3xl">
         Die PV-Anlage wird nicht klassisch gekauft, sondern über den

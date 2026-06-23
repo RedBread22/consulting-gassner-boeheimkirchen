@@ -234,7 +234,7 @@ export function Standorte() {
               standorteDerPhase={standorte.filter(
                 (s) => s.phase === phase.nummer,
               )}
-              offenDefault={phase.nummer === 1}
+              offenDefault={false}
             />
           ),
         )}
