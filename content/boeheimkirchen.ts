@@ -425,8 +425,6 @@ export const finanzierung = {
   moeglicheFoerderung_eur: 21391.5,
   pvLeistung_kWp: 105.75,
   speicher_kWh: 200,
-  // store and more — Konzept als PDF (eingebettet, scrollbar/verlinkt).
-  pdf: "/pdf/store-and-more-boeheimkirchen.pdf",
   vorteile: [
     {
       icon: "RefreshCw",
