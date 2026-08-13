@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   Bar,
   Line,
@@ -44,7 +45,24 @@ function formatEurCompact(n: number): string {
   return `${str}k`;
 }
 
+// Auf schmalen Screens reicht der Platz nicht für zwölf Dreibuchstaben-Labels,
+// darum unter 640px die Kurzform "J F M A M J J A S O N D".
+function useSchmalerScreen(): boolean {
+  const [schmal, setSchmal] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const update = () => setSchmal(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  return schmal;
+}
+
 export function LeasingChart({ daten, preisProKwh_ct }: Props) {
+  const schmal = useSchmalerScreen();
   const fixpreis = preisProKwh_ct / 100;
   const data = daten.map((m) => ({
     monat: m.monat,
@@ -62,7 +80,11 @@ export function LeasingChart({ daten, preisProKwh_ct }: Props) {
           <CartesianGrid stroke="#E5E5E5" vertical={false} />
           <XAxis
             dataKey="monat"
-            tick={{ fill: "#6B6B6B", fontSize: 12 }}
+            interval={0}
+            tick={{ fill: "#6B6B6B", fontSize: 11 }}
+            tickFormatter={
+              schmal ? (m: string) => m.charAt(0) : (m: string) => m
+            }
             tickLine={false}
             axisLine={{ stroke: "#E5E5E5" }}
           />
