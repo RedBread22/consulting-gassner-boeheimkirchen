@@ -185,7 +185,7 @@ function Finanzierung() {
         ))}
       </div>
       <p className="text-xs text-fg-muted mb-10 -mt-6">
-        Eckdaten aus der Wirtschaftlichkeitsberechnung (Phase 1 · 190,8 kWp) ·
+        Eckdaten aus der Wirtschaftlichkeitsberechnung (Phase 1 · 105,75 kWp) ·
         Consulting Gassner
       </p>
 
@@ -220,32 +220,6 @@ function Finanzierung() {
         </div>
       </div>
 
-      {/* store and more — Konzept als PDF, eingebettet/scrollbar wie bei den
-          Standort-PDFs, plus Link zum Öffnen in neuem Tab. */}
-      {finanzierung.pdf && (
-        <div className="mt-12">
-          <p className="text-xs uppercase tracking-[0.15em] text-fg-muted mb-4">
-            store and more — Konzept (PDF)
-          </p>
-          <div className="w-full h-[70vh] min-h-[420px] border border-border bg-bg-soft overflow-hidden rounded-xl">
-            <iframe
-              src={finanzierung.pdf}
-              title="store and more — Konzept Böheimkirchen"
-              className="w-full h-full"
-            />
-          </div>
-          <p className="text-sm text-fg-muted mt-3">
-            <a
-              href={finanzierung.pdf}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-fg transition-colors"
-            >
-              PDF in neuem Tab öffnen
-            </a>
-          </p>
-        </div>
-      )}
     </BenefitCard>
   );
 }

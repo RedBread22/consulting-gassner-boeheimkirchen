@@ -112,24 +112,10 @@ export type Standort = {
 
 // Quelle der Wahrheit: Standort-Tabelle. kWp-Werte werden direkt übernommen
 // (nicht aus der Modulzahl gerechnet — z. B. Posthaus mit 330-W-Modulen).
-// Stand: Christophs FINAL-Excel — Wirtschaftlichkeit umgestellt auf Phase 1
-// (190,8 kWp), 4-Phasen-Struktur.
+// Stand: FINAL-Daten (händisch korrigiert) — Wirtschaftlichkeit umgestellt auf
+// Phase 1 (105,75 kWp + 200 kWh Speicher), 4-Phasen-Struktur.
 export const standorte: Standort[] = [
   // ── PHASE 1 — Sofortmaßnahmen / Grundstein der Energiewende ────────────
-  {
-    slug: "parkplatz-mittelschule",
-    name: "Parkplatz Mittelschule",
-    phase: 1,
-    typ: "Carport",
-    adresse: "Hochfeldstraße 5",
-    module: 189,
-    leistung_kWp: 85.05,
-    beschreibung:
-      "Überdachung des Mittelschul-Parkplatzes als Carport-Konstruktion mit integrierter Photovoltaik. Doppelter Nutzen: Wetterschutz für die Fahrzeuge und Stromerzeugung über die Mittagsspitze. Mit zwei 22-kW-Ladepunkten direkt am Standort.",
-    bildPlatzhalter: "Parkplatz Mittelschule – Carport mit PV",
-    bildSrc: "/images/standorte/parkplatz-mittelschule.webp",
-    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Mittelschule_Carport.pdf",
-  },
   {
     slug: "mittelschule",
     name: "Mittelschule Böheimkirchen",
@@ -138,7 +124,6 @@ export const standorte: Standort[] = [
     adresse: "Hochfeldstraße 5",
     module: 203,
     leistung_kWp: 91.35,
-    speicher_kWh: 84,
     notstrom: true,
     beschreibung:
       "Aufdach-Anlage auf dem Eternitdach der Mittelschule inklusive Batteriespeicher und Notstromsystem. Die Schule wird damit blackoutfähig — kritischer Standort als möglicher Notunterstands-Punkt für die Gemeinde.",
@@ -154,7 +139,6 @@ export const standorte: Standort[] = [
     adresse: "Böheimkirchen 100",
     module: 32,
     leistung_kWp: 14.4,
-    speicher_kWh: 24,
     beschreibung:
       "Flachdach-Anlage auf der Sportplatz-Tribüne mit Batteriespeicher zur Lastverschiebung in die Abendstunden (Flutlichtbetrieb). Ergänzt um einen 22-kW-Ladepunkt.",
     bildPlatzhalter: "Sportplatz – Flachdach-PV",
@@ -167,12 +151,27 @@ export const standorte: Standort[] = [
     slug: "speichersystem-mittelschule",
     name: "Speichersystem inkl. Notstrom (Mittelschule)",
     phase: 1,
-    speicher_kWh: 241.2,
+    adresse: "Hochfeldstraße 5",
+    speicher_kWh: 200,
     notstrom: true,
     metaOnly: true,
   },
 
   // ── PHASE 2 — Förder- und Entwicklungsprojekte ──────────────────────────
+  {
+    slug: "parkplatz-mittelschule",
+    name: "Parkplatz Mittelschule",
+    phase: 2,
+    typ: "Carport",
+    adresse: "Hochfeldstraße 5",
+    module: 189,
+    leistung_kWp: 85.05,
+    beschreibung:
+      "Überdachung des Mittelschul-Parkplatzes als Carport-Konstruktion mit integrierter Photovoltaik. Doppelter Nutzen: Wetterschutz für die Fahrzeuge und Stromerzeugung über die Mittagsspitze. Mit zwei 22-kW-Ladepunkten direkt am Standort.",
+    bildPlatzhalter: "Parkplatz Mittelschule – Carport mit PV",
+    bildSrc: "/images/standorte/parkplatz-mittelschule.webp",
+    pdf: "/pdf/Marktgemeinde_Boeheimkirchen__Mittelschule_Carport.pdf",
+  },
   {
     slug: "parkplatz-bahnhof",
     name: "Parkplatz Bahnhof",
@@ -305,7 +304,7 @@ type PhaseMeta = {
 };
 
 // Phasen-Metadaten inkl. Summen aus der Standort-Tabelle und Anschaffung
-// netto je Phase (Christophs FINAL-Excel). Klappverhalten: Phase 1 ist
+// netto je Phase (FINAL-Daten). Klappverhalten: Phase 1 ist
 // standardmäßig offen, Phase 2 & 3 klappbar/geschlossen, Phase 4 ist nicht
 // klappbar (nur Überschrift, siehe Standorte.tsx).
 export const phasen: PhaseMeta[] = [
@@ -313,15 +312,18 @@ export const phasen: PhaseMeta[] = [
     nummer: 1,
     titel: "Phase 1 — Sofortmaßnahmen / Grundstein der Energiewende",
     zeitrahmen: "Sofortige Umsetzung",
-    anschaffungNetto_eur: 492000,
-    summe: { module: 424, leistung_kWp: 190.8, speicher_kWh: 349.2 },
+    anschaffungNetto_eur: 214400,
+    summe: { module: 235, leistung_kWp: 105.75, speicher_kWh: 200 },
   },
   {
     nummer: 2,
     titel: "Phase 2 — Förder- und Entwicklungsprojekte",
     zeitrahmen: "Betrachtung im Herbst · Umsetzung Q1–Q3 2027",
-    anschaffungNetto_eur: 690158,
-    summe: { module: 480, leistung_kWp: 216 },
+    // Anschaffung netto für Phase 2 inkl. Mittelschule Parkplatz liegt noch
+    // nicht vor — der alte Wert (690.158 €, ohne Mittelschule Parkplatz) wäre
+    // falsch und wird bis zur finalen Zahl ausgeblendet.
+    anschaffungNetto_eur: null,
+    summe: { module: 669, leistung_kWp: 301.05 },
   },
   {
     nummer: 3,
@@ -339,58 +341,65 @@ export const phasen: PhaseMeta[] = [
   },
 ];
 
-// Quelle der Wahrheit: Christophs FINAL-Excel — gesamte Wirtschaftlichkeit
-// umgestellt auf Phase 1 = 190,8 kWp (sofort umsetzbar), NICHT auf einen
-// Vollausbau.
+// Zentrale Laufzeiten — einzige Stelle für 13,7 / 16,3 / 30 Jahre.
+// Produktgarantie = Laufzeit Finanzierung + Laufzeit nach Finanzierung.
+export const laufzeiten = {
+  finanzierung_jahre: 13.7,
+  nachFinanzierung_jahre: 16.3,
+  produktgarantie_jahre: 30,
+} as const;
+
+// Quelle der Wahrheit: FINAL-Daten (händisch korrigiert) — gesamte
+// Wirtschaftlichkeit umgestellt auf Phase 1 = 105,75 kWp + 200 kWh Speicher
+// (sofort umsetzbar), NICHT auf einen Vollausbau.
 export const ergebnis = {
-  gesamtLeistung_kWp: 190.8,
-  gesamtSpeicher_kWh: 349.2,
+  gesamtLeistung_kWp: 105.75,
+  gesamtSpeicher_kWh: 200,
   pvNachher: {
-    leistung_kWp: 190.8,
-    leistung_kWh: 219420,
+    leistung_kWp: 105.75,
+    leistung_kWh: 121612.5,
     sonnenstunden: 1150,
-    // Eigennutzungsquote (Phase 1, 190,8 kWp), hergeleitet aus der FINAL-Excel:
-    // Eigennutzen = direkte PV 74.350,60 kWh + Energiegemeinschaft/EEG
-    // 89.862,32 kWh = 164.212,92 kWh; Überschuss (OeMAG) = 22.465,58 kWh
-    // → 88 % / 12 %. Einzige Stelle zum Anpassen — von Christoph final
-    // bestätigen lassen.
+    // Eigennutzungsquote (Phase 1) — Wert aus der bisherigen Berechnung
+    // übernommen, in den FINAL-Daten nicht neu ausgewiesen. Einzige Stelle
+    // zum Anpassen — von Christoph final bestätigen lassen.
     eigennutzen_prozent: 88,
     ueberschuss_prozent: 12,
   },
 } as const;
 
 export const wirtschaftlichkeit = {
-  investitionskosten_eur: 492000,
-  moeglicheFoerderung_eur: 98400,
-  finanzierung_ct_kWh: 15.97,
-  finanzierungskostenProJahr_eur: 35041.37,
-  finanzierungsdauer_jahre: 13.6,
-  einsparungProJahr_finanzierung_eur: 20467.53,
-  einsparungProJahr_nachFinanzierung_eur: 55508.9,
+  investitionskosten_eur: 214400,
+  // Hinweis auf der Seite beibehalten: nicht in der Berechnung enthalten.
+  moeglicheFoerderung_eur: 21391.5,
+  finanzierung_ct_kWh: 14.8,
+  finanzierungskostenProJahr_eur: 20292.68,
+  finanzierungsdauer_jahre: laufzeiten.finanzierung_jahre,
+  einsparungProJahr_finanzierung_eur: 23978.15,
+  einsparungProJahr_nachFinanzierung_eur: 44270.83,
   // Headline = Netto (nach Abzug der Zusatzkosten über 30 Jahre) — ehrlicher
   // als der Brutto-Wert. Brutto und Zusatzkosten werden sekundär ausgewiesen.
-  gesamteinsparung_30Jahre_netto_eur: 878304.43,
-  gesamteinsparung_30Jahre_brutto_eur: 1188704.43,
-  zusatzkosten_30Jahre_eur: 310400,
+  gesamteinsparung_30Jahre_netto_eur: 786675.3,
+  gesamteinsparung_30Jahre_brutto_eur: 1050115.3,
+  zusatzkosten_30Jahre_eur: 263440,
   // Aufgeschlüsselt nach Zeitraum (während/nach Finanzierung), je mit eigener
-  // Postenliste und Zwischensumme.
+  // Postenliste und Zwischensumme. Nur Beträge — keine Stückzahl-Spalte.
   zusatzkostenAufschluesselung: [
     {
-      phase: "Während Finanzierung (13,6 J)",
-      summe_eur: 183400,
+      phase: `Während Finanzierung (${laufzeiten.finanzierung_jahre.toLocaleString("de-AT")} J)`,
+      summe_eur: 116440,
       posten: [
-        { label: "Wartung", betrag_eur: 34000 },
-        { label: "Komponententausch", betrag_eur: 35000 },
+        { label: "Wartungsvertrag", betrag_eur: 34000 },
+        { label: "Komponententausch", betrag_eur: 45000 },
         { label: "Generalwartung", betrag_eur: 16000 },
-        { label: "Restwert lt. Finanzierung", betrag_eur: 98400 },
+        { label: "Restwert lt. Finanzierung", betrag_eur: 21440 },
       ],
     },
     {
-      phase: "Nach Finanzierung (16,4 J)",
-      summe_eur: 127000,
+      phase: `Nach Finanzierung (${laufzeiten.nachFinanzierung_jahre.toLocaleString("de-AT")} J)`,
+      summe_eur: 147000,
       posten: [
-        { label: "Wartung", betrag_eur: 41000 },
-        { label: "Komponententausch", betrag_eur: 70000 },
+        { label: "Wartungsvertrag", betrag_eur: 41000 },
+        { label: "Komponententausch", betrag_eur: 90000 },
         { label: "Generalwartung", betrag_eur: 16000 },
       ],
     },
@@ -404,18 +413,18 @@ export const wirtschaftlichkeit = {
 // The Human Touch in the Age of AI (Van Tatsch).
 
 // BENEFIT 1 — Finanzierung über Kapazitätsleasing.
-// Eckdaten aus der aktualisierten Wirtschaftlichkeitsberechnung (Consulting
-// Gassner) — Phase 1 = 190,8 kWp, sofort umsetzbar.
+// Eckdaten aus dem Finanzierungsangebot (Stand 10.08.2026): Erste Bank und
+// Sparkassen Leasing GmbH, Umsetzungspartner Findustrial — Phase 1 =
+// 105,75 kWp + 200 kWh Speicher, sofort umsetzbar. Preis 0,148 €/kWh,
+// geplante Laufzeit 13,7 Jahre (164 Monate) bei 137.475 kWh/Jahr Auslastung.
 export const finanzierung = {
-  stand: "01.04.2026",
-  preisProKwh_ct: 15.97,
-  laufzeit_jahre: 13.6,
-  anschaffungswertNetto_eur: 492000,
-  moeglicheFoerderung_eur: 98400,
-  pvLeistung_kWp: 190.8,
-  speicher_kWh: 349.2,
-  // store and more — Konzept als PDF (eingebettet, scrollbar/verlinkt).
-  pdf: "/pdf/store-and-more-boeheimkirchen.pdf",
+  stand: "10.08.2026",
+  preisProKwh_ct: 14.8,
+  laufzeit_jahre: laufzeiten.finanzierung_jahre,
+  anschaffungswertNetto_eur: 214400,
+  moeglicheFoerderung_eur: 21391.5,
+  pvLeistung_kWp: 105.75,
+  speicher_kWh: 200,
   vorteile: [
     {
       icon: "RefreshCw",
@@ -444,19 +453,20 @@ export const finanzierung = {
   ],
   // Illustrativer Jahresverlauf für das Visual „Leasingrate folgt dem PV-Ertrag“.
   // Balken = PV-Ertrag (kWh), Linie = flexible Leasingrate (kWh × Fixpreis).
+  // Jahressumme ≈ 137.400 kWh, passend zur geplanten Auslastung 137.475 kWh/Jahr.
   monatsverlauf: [
-    { monat: "Jän", ertrag_kWh: 11000 },
-    { monat: "Feb", ertrag_kWh: 18000 },
-    { monat: "Mär", ertrag_kWh: 29000 },
-    { monat: "Apr", ertrag_kWh: 42000 },
-    { monat: "Mai", ertrag_kWh: 49000 },
-    { monat: "Jun", ertrag_kWh: 51000 },
-    { monat: "Jul", ertrag_kWh: 52000 },
-    { monat: "Aug", ertrag_kWh: 46000 },
-    { monat: "Sep", ertrag_kWh: 34000 },
-    { monat: "Okt", ertrag_kWh: 22000 },
-    { monat: "Nov", ertrag_kWh: 13000 },
-    { monat: "Dez", ertrag_kWh: 9000 },
+    { monat: "Jän", ertrag_kWh: 4000 },
+    { monat: "Feb", ertrag_kWh: 6600 },
+    { monat: "Mär", ertrag_kWh: 10600 },
+    { monat: "Apr", ertrag_kWh: 15400 },
+    { monat: "Mai", ertrag_kWh: 17900 },
+    { monat: "Jun", ertrag_kWh: 18600 },
+    { monat: "Jul", ertrag_kWh: 19000 },
+    { monat: "Aug", ertrag_kWh: 16800 },
+    { monat: "Sep", ertrag_kWh: 12400 },
+    { monat: "Okt", ertrag_kWh: 8000 },
+    { monat: "Nov", ertrag_kWh: 4800 },
+    { monat: "Dez", ertrag_kWh: 3300 },
   ],
 } as const;
 
