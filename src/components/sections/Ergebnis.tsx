@@ -14,7 +14,7 @@ function formatNumber(n: number): string {
 }
 
 function formatKwp(n: number): string {
-  return n.toLocaleString("de-AT", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  return n.toLocaleString("de-AT", { minimumFractionDigits: 1, maximumFractionDigits: 2 });
 }
 
 function formatEur(n: number): string {
@@ -242,7 +242,7 @@ export function Ergebnis() {
         <PieChartDisplay
           eigennutzen={ergebnis.pvNachher.eigennutzen_prozent}
           ueberschuss={ergebnis.pvNachher.ueberschuss_prozent}
-          label={`PV-Leistung ${ergebnis.pvNachher.leistung_kWp.toLocaleString("de-AT")} kWp · ${formatNumber(ergebnis.pvNachher.leistung_kWh)} kWh · ${ergebnis.pvNachher.sonnenstunden.toLocaleString("de-AT")} Sonnenstunden`}
+          label={`PV-Leistung ${ergebnis.pvNachher.leistung_kWp.toLocaleString("de-AT")} kWp · ${ergebnis.pvNachher.leistung_kWh.toLocaleString("de-AT")} kWh · ${ergebnis.pvNachher.sonnenstunden.toLocaleString("de-AT")} Sonnenstunden`}
         />
       </div>
 
