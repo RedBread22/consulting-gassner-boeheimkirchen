@@ -23,11 +23,10 @@ function formatEur(n: number): string {
 
 export function Ergebnis() {
   const pvHeute = aktuellerStand.pv.groesse_kWp;
-  const pvNachher = ergebnis.pvNachher.leistung_kWp;
-  const pvFaktor = (pvNachher / pvHeute).toLocaleString("de-AT", {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  });
+  // Die neue Anlage aus Phase 1 kommt ZUSÄTZLICH zur bestehenden Anlage.
+  const pvZubau = ergebnis.pvNachher.leistung_kWp;
+  const pvGesamtNachher = pvHeute + pvZubau;
+  const pvZuwachsProzent = Math.round((pvZubau / pvHeute) * 100);
 
   return (
     <SectionWrapper id="ergebnis" soft>
@@ -86,10 +85,12 @@ export function Ergebnis() {
             </p>
             <dl className="space-y-5">
               <div>
-                <dt className="text-sm text-bg/60">PV-Leistung</dt>
+                <dt className="text-sm text-bg/60">Gesamte PV-Leistung</dt>
                 <dd className="font-serif text-3xl">
-                  {formatKwp(pvNachher)} kWp
-                  <span className="text-base text-bg/60 ml-2">≈ {pvFaktor}×</span>
+                  {formatKwp(pvGesamtNachher)} kWp
+                  <span className="text-base text-bg/60 ml-2">
+                    +{formatKwp(pvZubau)} kWp neu
+                  </span>
                 </dd>
               </div>
               <div>
@@ -121,14 +122,16 @@ export function Ergebnis() {
             <div className="h-3 rounded-full bg-border overflow-hidden">
               <div
                 className="h-full rounded-full bg-fg-muted"
-                style={{ width: `${(pvHeute / pvNachher) * 100}%` }}
+                style={{ width: `${(pvHeute / pvGesamtNachher) * 100}%` }}
               />
             </div>
           </div>
           <div>
             <div className="flex justify-between text-sm mb-2">
               <span className="font-medium">PV-Leistung nach Phase 1</span>
-              <span className="tabular-nums font-medium">{formatKwp(pvNachher)} kWp</span>
+              <span className="tabular-nums font-medium">
+                {formatKwp(pvGesamtNachher)} kWp
+              </span>
             </div>
             <div className="h-3 rounded-full bg-border overflow-hidden">
               <div className="h-full w-full rounded-full bg-fg" />
@@ -137,13 +140,17 @@ export function Ergebnis() {
         </div>
 
         <p className="mt-8 text-base md:text-lg text-fg-muted leading-relaxed max-w-2xl">
-          Rund <span className="text-fg font-medium">{pvFaktor}× mehr PV-Leistung</span>,
-          die Eigennutzungsquote steigt von{" "}
+          Rund{" "}
           <span className="text-fg font-medium">
-            {aktuellerStand.pv.eigennutzen_prozent} % auf{" "}
-            {ergebnis.pvNachher.eigennutzen_prozent} %
+            {pvZuwachsProzent} % mehr PV-Leistung
           </span>{" "}
-          — und nach der Finanzierung spart die Gemeinde{" "}
+          – von {formatKwp(pvHeute)} kWp auf {formatKwp(pvGesamtNachher)} kWp.
+          Die neue Anlage erreicht dabei eine Eigennutzungsquote von{" "}
+          <span className="text-fg font-medium">
+            {ergebnis.pvNachher.eigennutzen_prozent} % gegenüber{" "}
+            {aktuellerStand.pv.eigennutzen_prozent} % im Bestand
+          </span>
+          , und nach der Finanzierung spart die Gemeinde{" "}
           <span className="text-fg font-medium">
             {formatEur(wirtschaftlichkeit.einsparungProJahr_nachFinanzierung_eur)} € pro Jahr
           </span>
