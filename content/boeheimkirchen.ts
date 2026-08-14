@@ -359,11 +359,12 @@ export const ergebnis = {
     leistung_kWp: 105.75,
     leistung_kWh: 121612.5,
     sonnenstunden: 1150,
-    // Eigennutzungsquote (Phase 1) — Wert aus der bisherigen Berechnung
-    // übernommen, in den FINAL-Daten nicht neu ausgewiesen. Einzige Stelle
-    // zum Anpassen — von Christoph final bestätigen lassen.
-    eigennutzen_prozent: 88,
-    ueberschuss_prozent: 12,
+    // Eigennutzungsquote (Phase 1) — korrigierter Stand. Einzige Stelle
+    // zum Anpassen.
+    eigennutzen_prozent: 81,
+    ueberschuss_prozent: 19,
+    eigennutzen_kWh: 98239.94,
+    ueberschuss_kWh: 23372.56,
   },
 } as const;
 

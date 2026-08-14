@@ -242,6 +242,8 @@ export function Ergebnis() {
         <PieChartDisplay
           eigennutzen={ergebnis.pvNachher.eigennutzen_prozent}
           ueberschuss={ergebnis.pvNachher.ueberschuss_prozent}
+          eigennutzenKwh={formatEur(ergebnis.pvNachher.eigennutzen_kWh)}
+          ueberschussKwh={formatEur(ergebnis.pvNachher.ueberschuss_kWh)}
           label={`PV-Leistung ${ergebnis.pvNachher.leistung_kWp.toLocaleString("de-AT")} kWp · ${ergebnis.pvNachher.leistung_kWh.toLocaleString("de-AT")} kWh · ${ergebnis.pvNachher.sonnenstunden.toLocaleString("de-AT")} Sonnenstunden`}
         />
       </div>
